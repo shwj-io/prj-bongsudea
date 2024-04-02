@@ -45,6 +45,12 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 
 ## 기술 스택
 
+- nextjs
+- postgreSQL
+- vanilla-extract
+- tanstack-query
+- zustand
+
 ## 플로우 차트
 
 ## git commit convention
