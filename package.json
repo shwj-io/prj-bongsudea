@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@radix-ui/themes": "^3.0.2",
     "@tanstack/react-query": "^5.28.12",
     "@tanstack/react-query-devtools": "^5.28.12",
     "@vanilla-extract/css": "^1.14.2",
