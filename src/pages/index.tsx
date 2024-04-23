@@ -1,11 +1,32 @@
-import Head from "next/head";
-import Image from "next/image";
-import { Inter } from "next/font/google";
-import styles from "@/styles/Home.module.css";
+import Head from 'next/head';
+import Image from 'next/image';
+import { Inter } from 'next/font/google';
+import styles from '@/styles/Home.module.css';
+import { createClient } from '@/utils/server';
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({ subsets: ['latin'] });
 
 export default function Home() {
+  const supabase = createClient();
+  const handleClick = async () => {
+    const { data, error } = await supabase.auth.signInWithOAuth({
+      provider: 'github',
+    });
+  };
+  const googlehandleClick = async () => {
+    const { data, error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+    });
+  };
+
+  console.log(
+    'supabase.auth.user()',
+    supabase.auth.getUser().then(res => console.log('res', res))
+  );
+  console.log(
+    'supabase.auth.user()',
+    supabase.auth.getSession().then(res => console.log('res', res))
+  );
   return (
     <>
       <Head>
@@ -16,6 +37,8 @@ export default function Home() {
       </Head>
       <main className={`${styles.main} ${inter.className}`}>
         <div className={styles.description}>
+          <button onClick={handleClick}>깃허브 로그인</button>
+          <button onClick={googlehandleClick}>구글 로그인</button>
           <p>
             Get started by editing&nbsp;
             <code className={styles.code}>src/pages/index.tsx</code>
@@ -26,7 +49,7 @@ export default function Home() {
               target="_blank"
               rel="noopener noreferrer"
             >
-              By{" "}
+              By{' '}
               <Image
                 src="/vercel.svg"
                 alt="Vercel Logo"
