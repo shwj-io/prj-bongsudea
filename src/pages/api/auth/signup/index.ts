@@ -15,57 +15,38 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
 ) {
-  console.log('req body', req.body);
   const supabase = createClient();
-  const { type, email, password } = req.body;
-  if (type === 'email') {
-    try {
-      const { data, error } = await supabase.auth.signUp({
-        email,
-        password: password.toString(),
-        options: {
-          data: {
-            username: email,
-            avatar_url: null,
-          },
+  const { email, password } = req.body;
+  try {
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password: password.toString(),
+      options: {
+        data: {
+          username: email,
+          avatar_url: null,
         },
-      });
+      },
+    });
+    const userInfo = {
+      id: data.user?.id,
+      email: data.user?.email,
+      username: data.user?.user_metadata.username,
+      access_token: data.session?.access_token,
+      refresh_token: data.session?.refresh_token,
+      expires_at: data.session?.expires_at,
+    };
 
-      if (error) throw error; // error가 있다면 catch 블록으로 넘어갑니다.
+    if (error) throw error; // error가 있다면 catch 블록으로 넘어갑니다.
 
-      // 에러가 없다면 가입 성공 메시지와 함께 데이터를 반환합니다.
-      res
-        .status(200)
-        .json({ data: data, message: '가입에 성공했습니다.', status: 200 });
-    } catch (error) {
-      // 에러 처리
-      res
-        .status(400)
-        .json({ message: '오류가 발생했습니다', error: error, status: 400 });
-    }
-  }
-
-  if (type === 'github') {
-    try {
-      const { data, error } = await supabase.auth.signInWithOAuth({
-        provider: 'github',
-        options: {
-          redirectTo: 'http://localhost:3000',
-        },
-      });
-
-      if (error) throw error;
-      res.status(200).json({
-        data: data,
-        message: '깃허브 링크 발급이 완료되었습니다.',
-        status: 200,
-      });
-    } catch (error) {
-      res
-        .status(400)
-        .json({ message: '오류가 발생했습니다', error: error, status: 400 });
-    }
-  } else {
-    res.status(500).json({ message: '잘못된 접근입니다.', status: 500 });
+    // 에러가 없다면 가입 성공 메시지와 함께 데이터를 반환합니다.
+    res
+      .status(200)
+      .json({ data: userInfo, message: '가입에 성공했습니다.', status: 200 });
+  } catch (error) {
+    // 에러 처리
+    res
+      .status(400)
+      .json({ message: '오류가 발생했습니다', error: error, status: 400 });
   }
 }
