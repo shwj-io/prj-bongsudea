@@ -1,6 +1,32 @@
 import Head from 'next/head';
+import Image from 'next/image';
+import { Inter } from 'next/font/google';
+import styles from '@/styles/Home.module.css';
+import { createClient } from '@/utils/server';
+
+const inter = Inter({ subsets: ['latin'] });
 
 export default function Home() {
+  const supabase = createClient();
+  const handleClick = async () => {
+    const { data, error } = await supabase.auth.signInWithOAuth({
+      provider: 'github',
+    });
+  };
+  const googlehandleClick = async () => {
+    const { data, error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+    });
+  };
+
+  console.log(
+    'supabase.auth.user()',
+    supabase.auth.getUser().then(res => console.log('res', res))
+  );
+  console.log(
+    'supabase.auth.user()',
+    supabase.auth.getSession().then(res => console.log('res', res))
+  );
   return (
     <>
       <Head>
