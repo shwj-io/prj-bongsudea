@@ -12,12 +12,12 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
 ) {
-  console.log('req ================', req);
-  console.log('reqeust query', req.query);
-  console.log('reqeust query', req.headers);
+  console.log('req ================', req.query);
+  // console.log('reqeust query', req.query);
+  // console.log('reqeust query', req.headers);
   const supabase = createClient();
 
-  const session = await supabase.auth.getUser();
+  const session = await supabase.auth.getUser(req.query.access_token);
   console.log('session =============', session);
 
   // supabase.auth

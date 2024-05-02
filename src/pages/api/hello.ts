@@ -33,11 +33,11 @@ export default async function handler(
     .then(response => {
       // console.log('response', response);
       res.redirect(response.data.url);
-      const test = supabase.auth.getUser();
-      supabase.auth.getUser().then(user => {
-        console.log('user @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@', user);
-        res.status(200).json({ message: user });
-      });
+      // const test = supabase.auth.getUser();
+      // supabase.auth.getUser().then(user => {
+      //   console.log('user @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@', user);
+      //   res.status(200).json({ message: user });
+      // });
     })
     .catch(error => {
       res.status(500).json({ error: error.message });
