@@ -1,6 +1,6 @@
 import { style } from '@vanilla-extract/css';
 
-export const LoginContainer = style({
+export const emailLoginContainer = style({
   display: 'flex',
   flex: 1,
   flexDirection: 'column',
@@ -8,21 +8,40 @@ export const LoginContainer = style({
   alignItems: 'center',
   width: '100%',
   height: '100%',
-  gap: '30px',
+  gap: '50px',
 });
 
-export const socialLoginContainer = style({
+export const emailLogin = style({
   display: 'flex',
   flexDirection: 'column',
   gap: '10px',
-  width: '400px',
 });
 
 export const form = style({
   display: 'flex',
   flexDirection: 'column',
-  gap: '20px',
+  gap: '40px',
   width: '400px',
+});
+
+export const inputContainer = style({
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '20px',
+});
+
+export const linkContainer = style({
+  width: '400px',
+  display: 'flex',
+  justifyContent: 'center',
+  gap: '10px',
+  color: '#999999',
+});
+
+export const link = style({
+  color: '#999999',
+  width: '100%',
+  textAlign: 'center',
 });
 
 export const lineContainer = style({
@@ -35,15 +54,17 @@ export const lineContainer = style({
 
 export const line = style({
   width: '100%',
-  borderBottom: '1px solid #000',
+  borderBottom: '1px solid #999999',
 });
 
 export const or = style({
   whiteSpace: 'nowrap',
+  color: '#999999',
 });
 
-export const link = style({
-  color: '#fff',
-  width: '372px',
-  boxSizing: 'border-box',
+export const socialLoginContainer = style({
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '10px',
+  width: '400px',
 });
