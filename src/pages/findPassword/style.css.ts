@@ -1,20 +1,26 @@
 import { style } from '@vanilla-extract/css';
 
-export const emailLoginContainer = style({
+export const findPasswordContainer = style({
   display: 'flex',
   flex: 1,
-  flexDirection: 'column',
   justifyContent: 'center',
   alignItems: 'center',
   width: '100%',
   height: '100%',
-  gap: '20px',
 });
 
 export const form = style({
   display: 'flex',
   flexDirection: 'column',
-  gap: '40px',
+  gap: '20px',
+  width: '400px',
+});
+
+export const verifyCode = style({
+  display: 'flex',
+
+  alignItems: 'center',
+  gap: '20px',
   width: '400px',
 });
 
@@ -25,9 +31,8 @@ export const inputContainer = style({
 });
 
 export const linkContainer = style({
-  width: '400px',
   display: 'flex',
-  justifyContent: 'space-between',
+  justifyContent: 'center',
   gap: '10px',
 });
 

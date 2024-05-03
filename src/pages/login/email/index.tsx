@@ -1,45 +1,38 @@
 import useForm from '@/hooks/useForm';
-import { Button, ButtonProps, TextField, styled } from '@mui/material';
-import { grey } from '@mui/material/colors';
 import Link from 'next/link';
+import {
+  emailLoginContainer,
+  inputContainer,
+  link,
+  form,
+  linkContainer,
+} from './style.css';
+import BasicInput from '@/components/input';
+import BasicButton from '@/components/button';
 // import { loginContainer } from './style.css.ts';
-
-const ColorButton = styled(Button)<ButtonProps>(({ theme }) => ({
-  color: grey[100],
-  backgroundColor: grey[900],
-  '&:hover': {
-    backgroundColor: grey[700],
-  },
-}));
 
 export default function EmailLogin() {
   const initValue = {};
   const { formValue, handleSubmit } = useForm(initValue);
 
   return (
-    <div>
-      <form method="post" onSubmit={e => handleSubmit(e)}>
-        <TextField
-          required
-          id="outlined-required"
-          label="아이디"
-          defaultValue="Hello World"
-        />
-        <TextField
-          required
-          id="outlined-required"
-          label="비밀번호"
-          defaultValue="Hello World"
-        />
+    <div className={emailLoginContainer}>
+      <form method="post" onSubmit={e => handleSubmit(e)} className={form}>
+        <div className={inputContainer}>
+          <BasicInput placeholder="아이디" />
+          <BasicInput placeholder="비밀번호" />
+        </div>
 
-        <ColorButton variant="contained" color="primary">
-          로그인
-        </ColorButton>
+        <BasicButton>로그인</BasicButton>
       </form>
-      <div>
-        <Link href="/findPassword">비밀번호 찾기</Link>
-        <div>|</div>
-        <Link href="/signUp">회원가입</Link>
+      <div className={linkContainer}>
+        <Link href="/findPassword" className={link}>
+          비밀번호 찾기
+        </Link>
+        {/* <div>|</div> */}
+        <Link href="/signUp" className={link}>
+          회원가입
+        </Link>
       </div>
     </div>
   );

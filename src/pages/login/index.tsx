@@ -1,38 +1,32 @@
-import { Button, ButtonProps, styled } from '@mui/material';
-import { grey } from '@mui/material/colors';
 import Link from 'next/link';
-
-const ColorButton = styled(Button)<ButtonProps>(({ theme }) => ({
-  color: grey[100],
-  backgroundColor: grey[900],
-  '&:hover': {
-    backgroundColor: grey[700],
-  },
-}));
+import {
+  LoginContainer,
+  line,
+  lineContainer,
+  link,
+  or,
+  socialLoginContainer,
+} from './style.css';
+import BasicButton from '@/components/button';
 
 export default function Login() {
   return (
-    <div>
-      <div>
-        <ColorButton variant="contained" color="primary">
-          구글 로그인
-        </ColorButton>
-        <ColorButton variant="contained" color="primary">
-          카카오 로그인
-        </ColorButton>
-        <ColorButton variant="contained" color="primary">
-          로그인
-        </ColorButton>
+    <div className={LoginContainer}>
+      <div className={socialLoginContainer}>
+        <BasicButton>구글 로그인</BasicButton>
+        <BasicButton>카카오 로그인</BasicButton>
       </div>
-      <div>
-        <div />
-        <div>또는</div>
-        <div />
+      <div className={lineContainer}>
+        <div className={line} />
+        <div className={or}>또는</div>
+        <div className={line} />
       </div>
 
-      <ColorButton variant="contained" color="primary">
-        <Link href="/login/email">이메일 로그인</Link>
-      </ColorButton>
+      <BasicButton>
+        <Link href="/login/email" className={link}>
+          이메일 로그인
+        </Link>
+      </BasicButton>
     </div>
   );
 }

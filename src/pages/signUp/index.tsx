@@ -1,27 +1,16 @@
 import useForm from '@/hooks/useForm';
 import { getAdministrative } from '../api/login';
 import {
-  Button,
-  ButtonProps,
   Checkbox,
   FormControl,
   FormControlLabel,
   InputLabel,
   MenuItem,
   Select,
-  TextField,
-  styled,
 } from '@mui/material';
-import { grey } from '@mui/material/colors';
-// import { loginContainer } from './style.css.ts';
-
-const ColorButton = styled(Button)<ButtonProps>(({ theme }) => ({
-  color: grey[100],
-  backgroundColor: grey[900],
-  '&:hover': {
-    backgroundColor: grey[700],
-  },
-}));
+import { form, selectContainer, signUpContainer } from './style.css.ts';
+import BasicInput from '@/components/input/index.tsx';
+import BasicButton from '@/components/button/index.tsx';
 
 export default function SignUp({ item }) {
   const initValue = {};
@@ -29,27 +18,12 @@ export default function SignUp({ item }) {
   // console.log(item);
 
   return (
-    <div>
-      <form method="post" onSubmit={e => handleSubmit(e)}>
-        <TextField
-          required
-          id="outlined-required"
-          label="아이디"
-          defaultValue="Hello World"
-        />
-        <TextField
-          required
-          id="outlined-required"
-          label="비밀번호"
-          defaultValue="Hello World"
-        />
-        <TextField
-          required
-          id="outlined-required"
-          label="비밀번호 확인"
-          defaultValue="Hello World"
-        />
-        <div>
+    <div className={signUpContainer}>
+      <form method="post" onSubmit={e => handleSubmit(e)} className={form}>
+        <BasicInput placeholder="아이디" />
+        <BasicInput placeholder="비밀번호" />
+        <BasicInput placeholder="비밀번호 확인" />
+        <div className={selectContainer}>
           <FormControl fullWidth>
             <InputLabel id="demo-simple-select-label">시/도</InputLabel>
             <Select
@@ -94,9 +68,7 @@ export default function SignUp({ item }) {
           label="알림 서비스에 동의합니다."
         />
 
-        <ColorButton variant="contained" color="primary">
-          회원가입
-        </ColorButton>
+        <BasicButton>회원가입</BasicButton>
       </form>
     </div>
   );
