@@ -1,16 +1,10 @@
 import useForm from '@/hooks/useForm';
 import { getAdministrative } from '../api/login';
-import {
-  Checkbox,
-  FormControl,
-  FormControlLabel,
-  InputLabel,
-  MenuItem,
-  Select,
-} from '@mui/material';
+import { Checkbox, FormControlLabel } from '@mui/material';
 import { form, selectContainer, signUpContainer } from './style.css.ts';
 import BasicInput from '@/components/input/index.tsx';
 import BasicButton from '@/components/button/index.tsx';
+import BasicSelect from '@/components/select/index.tsx';
 
 export default function SignUp({ item }) {
   const initValue = {};
@@ -24,43 +18,25 @@ export default function SignUp({ item }) {
         <BasicInput placeholder="비밀번호" />
         <BasicInput placeholder="비밀번호 확인" />
         <div className={selectContainer}>
-          <FormControl fullWidth>
-            <InputLabel id="demo-simple-select-label">시/도</InputLabel>
-            <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              // value={age}
-              label="시/도"
-              // onChange={handleChange}
-            >
-              <MenuItem value={10}>Ten</MenuItem>
-              <MenuItem value={20}>Twenty</MenuItem>
-              <MenuItem value={30}>Thirty</MenuItem>
-            </Select>
-          </FormControl>
-          <FormControl fullWidth>
-            <InputLabel id="demo-simple-select-label">군/구</InputLabel>
-            <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              // value={age}
-              label="군/구"
-              // onChange={handleChange}
-            >
-              <MenuItem value={10}>Ten</MenuItem>
-              <MenuItem value={20}>Twenty</MenuItem>
-              <MenuItem value={30}>Thirty</MenuItem>
-            </Select>
-          </FormControl>
+          <BasicSelect
+            placeholder="시/도"
+            itemList={null}
+            handleChange={null}
+          ></BasicSelect>
+          <BasicSelect
+            placeholder="군/구"
+            itemList={null}
+            handleChange={null}
+          ></BasicSelect>
         </div>
 
         <FormControlLabel
           control={
             <Checkbox
               sx={{
-                color: 'pink[800]',
+                color: '#000',
                 '&.Mui-checked': {
-                  color: 'pink[600]',
+                  color: '#000',
                 },
               }}
             />

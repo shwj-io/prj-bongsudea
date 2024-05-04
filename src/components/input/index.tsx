@@ -1,5 +1,4 @@
 import { TextField } from '@mui/material';
-import { grey } from '@mui/material/colors';
 
 type BasicButtonProps = {
   placeholder: string;
@@ -11,12 +10,21 @@ export default function BasicInput({ placeholder }: BasicButtonProps) {
       required
       id="outlined-required"
       label={placeholder}
-      defaultValue="Hello World"
+      InputLabelProps={{
+        style: { color: '#000' },
+      }}
       sx={{
         width: '100%',
-        '.Mui-focused': {
-          // outline: 'none',
-          color: grey[900],
+        '&.MuiFormLabel-root-MuiInputLabel-root .Mui-focused': {
+          color: '#000',
+        },
+        '& .MuiInputLabel-outlined': {
+          color: '#000',
+        },
+        '& .MuiOutlinedInput-root': {
+          '&.Mui-focused fieldset': {
+            borderColor: '#000',
+          },
         },
       }}
     />

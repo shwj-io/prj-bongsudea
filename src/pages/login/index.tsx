@@ -16,7 +16,7 @@ import BasicInput from '@/components/input';
 import BasicButton from '@/components/button';
 
 export default function EmailLogin() {
-  const initValue = {};
+  const initValue = { email: '', password: '' };
   const { formValue, handleSubmit } = useForm(initValue);
 
   return (
@@ -24,7 +24,7 @@ export default function EmailLogin() {
       <div className={emailLogin}>
         <form method="post" onSubmit={e => handleSubmit(e)} className={form}>
           <div className={inputContainer}>
-            <BasicInput placeholder="아이디" />
+            <BasicInput placeholder="이메일" />
             <BasicInput placeholder="비밀번호" />
           </div>
 
