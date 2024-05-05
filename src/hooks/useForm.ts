@@ -11,7 +11,13 @@ const useForm = initValue => {
     const formJson = Object.fromEntries(formData.entries());
     setFormValue(formJson);
   }
-  return { formValue, handleSubmit };
+
+  const handleChange = (e, name: string) => {
+    const { value } = e.target;
+    setFormValue({ ...formValue, [name]: value });
+  };
+
+  return { formValue, handleSubmit, handleChange };
 };
 
 export default useForm;

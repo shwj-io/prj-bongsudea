@@ -2,13 +2,15 @@ import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 
 type BasicSelectProps = {
   placeholder: string;
-  itemList: [];
-  handleChange: () => void;
+  itemList: [{ city: string }];
+  value: string;
+  handleChange: (e) => void;
 };
 
 export default function BasicSelect({
   placeholder,
   itemList,
+  value,
   handleChange,
 }: BasicSelectProps) {
   return (
@@ -19,9 +21,9 @@ export default function BasicSelect({
       <Select
         labelId="demo-simple-select-label"
         id="demo-simple-select"
-        // value={age
+        value={value}
         label={placeholder}
-        // onChange={handleChange}
+        onChange={handleChange}
         sx={{
           width: '100%',
 
@@ -38,9 +40,13 @@ export default function BasicSelect({
           },
         }}
       >
-        <MenuItem value={10}>Ten</MenuItem>
-        <MenuItem value={20}>Twenty</MenuItem>
-        <MenuItem value={30}>Thirty</MenuItem>
+        {itemList?.map(city => {
+          return (
+            <MenuItem value={city.city} key={city.city + '0'}>
+              {city.city}
+            </MenuItem>
+          );
+        })}
       </Select>
     </FormControl>
   );

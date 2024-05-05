@@ -5,34 +5,63 @@ import { form, selectContainer, signUpContainer } from './style.css.ts';
 import BasicInput from '@/components/input/index.tsx';
 import BasicButton from '@/components/button/index.tsx';
 import BasicSelect from '@/components/select/index.tsx';
+import { useState } from 'react';
 
-export default function SignUp({ item }) {
-  const initValue = {};
-  const { formValue, handleSubmit } = useForm(initValue);
-  // console.log(item);
+export default function SignUp({ city }) {
+  const initValue = {
+    email: '',
+    password: '',
+    checkPassword: '',
+    city: '',
+    word: '',
+  };
+  const { formValue, handleSubmit, handleChange } = useForm(initValue);
+  const [isChecked, setIsChecked] = useState(false);
+  const wordList = city.filter(city => {
+    return city.city === formValue.city;
+  });
+
+  const handleCheckBox = () => {
+    setIsChecked(prev => !prev);
+  };
 
   return (
     <div className={signUpContainer}>
       <form method="post" onSubmit={e => handleSubmit(e)} className={form}>
-        <BasicInput placeholder="아이디" />
-        <BasicInput placeholder="비밀번호" />
-        <BasicInput placeholder="비밀번호 확인" />
+        <BasicInput
+          placeholder="아이디"
+          value={formValue.email}
+          handleChange={e => handleChange(e, 'email')}
+        />
+        <BasicInput
+          placeholder="비밀번호"
+          value={formValue.password}
+          handleChange={e => handleChange(e, 'password')}
+        />
+        <BasicInput
+          placeholder="비밀번호 확인"
+          value={formValue.checkPassword}
+          handleChange={e => handleChange(e, 'checkPassword')}
+        />
         <div className={selectContainer}>
           <BasicSelect
             placeholder="시/도"
-            itemList={null}
-            handleChange={null}
+            itemList={city}
+            value={formValue.city}
+            handleChange={e => handleChange(e, 'city')}
           ></BasicSelect>
           <BasicSelect
             placeholder="군/구"
-            itemList={null}
-            handleChange={null}
+            itemList={wordList[0]?.area}
+            value={formValue.word}
+            handleChange={e => handleChange(e, 'word')}
           ></BasicSelect>
         </div>
 
         <FormControlLabel
           control={
             <Checkbox
+              onChange={handleCheckBox}
               sx={{
                 color: '#000',
                 '&.Mui-checked': {
@@ -55,7 +84,7 @@ export const getServerSideProps = async () => {
     const administrativeData = await getAdministrative();
 
     return {
-      props: { item: administrativeData },
+      props: { city: administrativeData },
     };
   } catch (err) {
     return {

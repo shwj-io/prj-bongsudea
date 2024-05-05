@@ -15,17 +15,25 @@ import {
 import BasicInput from '@/components/input';
 import BasicButton from '@/components/button';
 
-export default function EmailLogin() {
+export default function Login() {
   const initValue = { email: '', password: '' };
-  const { formValue, handleSubmit } = useForm(initValue);
+  const { formValue, handleSubmit, handleChange } = useForm(initValue);
 
   return (
     <div className={emailLoginContainer}>
       <div className={emailLogin}>
         <form method="post" onSubmit={e => handleSubmit(e)} className={form}>
           <div className={inputContainer}>
-            <BasicInput placeholder="이메일" />
-            <BasicInput placeholder="비밀번호" />
+            <BasicInput
+              placeholder="이메일"
+              value={formValue.email}
+              handleChange={e => handleChange(e, 'email')}
+            />
+            <BasicInput
+              placeholder="비밀번호"
+              value={formValue.password}
+              handleChange={e => handleChange(e, 'password')}
+            />
           </div>
 
           <BasicButton>로그인</BasicButton>
