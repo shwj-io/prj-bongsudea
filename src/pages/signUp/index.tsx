@@ -1,13 +1,19 @@
-import useForm from '@/hooks/useForm';
-import { getAdministrative } from '../api/login';
-import { Checkbox, FormControlLabel } from '@mui/material';
 import { form, selectContainer, signUpContainer } from './style.css.ts';
 import BasicInput from '@/components/input/index.tsx';
 import BasicButton from '@/components/button/index.tsx';
 import BasicSelect from '@/components/select/index.tsx';
+import { Checkbox, FormControlLabel } from '@mui/material';
+// css
 import { useState } from 'react';
+import { useRouter } from 'next/router';
+import axios from 'axios';
+import useForm from '@/hooks/useForm';
+import { getAdministrative, signUp } from '../../modules/function/signInUp.ts';
+import SignUpValidation from '@/modules/function/validation.ts';
 
-export default function SignUp({ city }) {
+// export default function SignUp({ city }) { // TODO 추후 주소, 알림동의 추가
+export default function SignUp() {
+  const router = useRouter();
   const initValue = {
     email: '',
     password: '',
@@ -15,50 +21,68 @@ export default function SignUp({ city }) {
     city: '',
     word: '',
   };
-  const { formValue, handleSubmit, handleChange } = useForm(initValue);
-  const [isChecked, setIsChecked] = useState(false);
-  const wordList = city.filter(city => {
-    return city.city === formValue.city;
+
+  const handleFormSubmit = async value => {
+    try {
+      const response = await signUp(value.email, value.password);
+      if (response) {
+        router.push('/');
+        return response;
+      }
+    } catch (error: any) {
+      throw new Error(error);
+    }
+  };
+
+  const { value, errors, isLoading, handleSubmit, handleChange } = useForm({
+    initValue,
+    onSubmit: handleFormSubmit,
+    validate: SignUpValidation,
   });
 
-  const handleCheckBox = () => {
-    setIsChecked(prev => !prev);
-  };
+  // const [isChecked, setIsChecked] = useState(false);
+  // const wordList = city.filter(city => {
+  //   return city.city === value.city;
+  // });
+
+  // const handleCheckBox = () => {
+  //   setIsChecked(prev => !prev);
+  // };
 
   return (
     <div className={signUpContainer}>
       <form method="post" onSubmit={e => handleSubmit(e)} className={form}>
         <BasicInput
           placeholder="아이디"
-          value={formValue.email}
+          value={value.email}
           handleChange={e => handleChange(e, 'email')}
         />
         <BasicInput
           placeholder="비밀번호"
-          value={formValue.password}
+          value={value.password}
           handleChange={e => handleChange(e, 'password')}
         />
         <BasicInput
           placeholder="비밀번호 확인"
-          value={formValue.checkPassword}
+          value={value.checkPassword}
           handleChange={e => handleChange(e, 'checkPassword')}
         />
-        <div className={selectContainer}>
+        {/* <div className={selectContainer}>
           <BasicSelect
             placeholder="시/도"
             itemList={city}
-            value={formValue.city}
+            value={value.city}
             handleChange={e => handleChange(e, 'city')}
           ></BasicSelect>
           <BasicSelect
             placeholder="군/구"
             itemList={wordList[0]?.area}
-            value={formValue.word}
+            value={value.word}
             handleChange={e => handleChange(e, 'word')}
           ></BasicSelect>
-        </div>
+        </div> */}
 
-        <FormControlLabel
+        {/* <FormControlLabel
           control={
             <Checkbox
               onChange={handleCheckBox}
@@ -71,24 +95,24 @@ export default function SignUp({ city }) {
             />
           }
           label="알림 서비스에 동의합니다."
-        />
+        /> */}
 
-        <BasicButton>회원가입</BasicButton>
+        <BasicButton type="submit">회원가입</BasicButton>
       </form>
     </div>
   );
 }
 
-export const getServerSideProps = async () => {
-  try {
-    const administrativeData = await getAdministrative();
+// export const getServerSideProps = async () => {
+//   try {
+//     const administrativeData = await getAdministrative();
 
-    return {
-      props: { city: administrativeData },
-    };
-  } catch (err) {
-    return {
-      notFound: false,
-    };
-  }
-};
+//     return {
+//       props: { city: administrativeData },
+//     };
+//   } catch (err) {
+//     return {
+//       notFound: false,
+//     };
+//   }
+// };

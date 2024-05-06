@@ -17,7 +17,7 @@ import BasicButton from '@/components/button';
 
 export default function Login() {
   const initValue = { email: '', password: '' };
-  const { formValue, handleSubmit, handleChange } = useForm(initValue);
+  const { value, handleSubmit, handleChange } = useForm(initValue);
 
   return (
     <div className={emailLoginContainer}>
@@ -26,17 +26,16 @@ export default function Login() {
           <div className={inputContainer}>
             <BasicInput
               placeholder="이메일"
-              value={formValue.email}
+              value={value.email}
               handleChange={e => handleChange(e, 'email')}
             />
             <BasicInput
               placeholder="비밀번호"
-              value={formValue.password}
+              value={value.password}
               handleChange={e => handleChange(e, 'password')}
             />
           </div>
-
-          <BasicButton>로그인</BasicButton>
+          <BasicButton type="submit">로그인</BasicButton>
         </form>
         <div className={linkContainer}>
           <Link href="/findPassword" className={link}>
@@ -54,8 +53,8 @@ export default function Login() {
         <div className={line} />
       </div>
       <div className={socialLoginContainer}>
-        <BasicButton>구글 로그인</BasicButton>
-        <BasicButton>카카오 로그인</BasicButton>
+        <BasicButton type="button">구글 로그인</BasicButton>
+        <BasicButton type="button">카카오 로그인</BasicButton>
       </div>
     </div>
   );

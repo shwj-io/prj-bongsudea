@@ -10,35 +10,35 @@ export default function FindPassword() {
     password: '',
     checkPassword: '',
   };
-  const { formValue, handleSubmit, handleChange } = useForm(initValue);
+  const { value, handleSubmit, handleChange } = useForm(initValue);
 
   return (
     <div className={findPasswordContainer}>
       <form method="post" onSubmit={e => handleSubmit(e)} className={form}>
         <BasicInput
           placeholder="이메일"
-          value={formValue.email}
+          value={value.email}
           handleChange={e => handleChange(e, 'email')}
         />
         <div className={verifyCode}>
           <BasicInput
             placeholder="이메일 인증 코드"
-            value={formValue.emailCode}
+            value={value.emailCode}
             handleChange={e => handleChange(e, 'emailCode')}
           />
-          <BasicButton>인증</BasicButton>
+          <BasicButton type="button">인증</BasicButton>
         </div>
         <BasicInput
           placeholder="새로운 비밀번호"
-          value={formValue.password}
+          value={value.password}
           handleChange={e => handleChange(e, 'password')}
         />
         <BasicInput
           placeholder="새로운 비밀번호 확인"
-          value={formValue.checkPassword}
+          value={value.checkPassword}
           handleChange={e => handleChange(e, 'checkPassword')}
         />
-        <BasicButton>비밀번호 변경</BasicButton>
+        <BasicButton type="submit">비밀번호 변경</BasicButton>
       </form>
     </div>
   );

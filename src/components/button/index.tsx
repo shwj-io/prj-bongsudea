@@ -4,11 +4,13 @@ import { ReactNode } from 'react';
 
 type BasicButtonProps = {
   children: ReactNode;
+  type: 'button' | 'submit' | 'reset' | undefined;
 };
 
-export default function BasicButton({ children }: BasicButtonProps) {
+export default function BasicButton({ children, type }: BasicButtonProps) {
   return (
     <Button
+      type={type}
       variant="contained"
       color="primary"
       sx={{

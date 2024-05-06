@@ -1,6 +1,6 @@
 import { TextField } from '@mui/material';
 
-type BasicButtonProps = {
+type BasicInputProps = {
   placeholder: string;
   value: string;
   handleChange: (e) => void;
@@ -10,7 +10,7 @@ export default function BasicInput({
   placeholder,
   value,
   handleChange,
-}: BasicButtonProps) {
+}: BasicInputProps) {
   return (
     <TextField
       required
