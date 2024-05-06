@@ -1,5 +1,3 @@
-import useForm from '@/hooks/useForm';
-import Link from 'next/link';
 import {
   emailLoginContainer,
   inputContainer,
@@ -14,10 +12,35 @@ import {
 } from './style.css';
 import BasicInput from '@/components/input';
 import BasicButton from '@/components/button';
+import Link from 'next/link';
+// css
+import { useRouter } from 'next/router';
+import useForm from '@/hooks/useForm';
+import { getReady } from '@/modules/function/common';
+import { loginValidation } from '@/modules/function/validation';
+import { loginEmail } from '@/modules/function/signInUp';
 
 export default function Login() {
   const initValue = { email: '', password: '' };
-  const { value, handleSubmit, handleChange } = useForm(initValue);
+  const router = useRouter();
+
+  const handleFormSubmit = async value => {
+    try {
+      const response = await loginEmail(value.email, value.password);
+      if (response) {
+        router.push('/');
+        return response;
+      }
+    } catch (error: any) {
+      throw new Error(error);
+    }
+  };
+
+  const { value, errors, isLoading, handleSubmit, handleChange } = useForm({
+    initValue,
+    onSubmit: handleFormSubmit,
+    validate: loginValidation,
+  });
 
   return (
     <div className={emailLoginContainer}>
@@ -38,9 +61,12 @@ export default function Login() {
           <BasicButton type="submit">로그인</BasicButton>
         </form>
         <div className={linkContainer}>
-          <Link href="/findPassword" className={link}>
+          {/* <Link href="/findPassword" className={link}>
             비밀번호 찾기
-          </Link>
+          </Link> */}
+          <div onClick={getReady} className={link}>
+            비밀번호 찾기
+          </div>
           <div>|</div>
           <Link href="/signUp" className={link}>
             회원가입

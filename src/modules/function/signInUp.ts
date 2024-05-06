@@ -30,3 +30,25 @@ export const signUp = async (email: string, password: string) => {
     throw new Error(error);
   }
 };
+
+export const loginEmail = async (email: string, password: string) => {
+  try {
+    const response = await axios.post(
+      'http://localhost:3000/api/auth/login/email',
+      {
+        type: 'email',
+        email,
+        password,
+      }
+    );
+
+    if (response.status === 200) {
+      console.log(response.data.access_token); //토큰
+      return response.data.user;
+    }
+
+    throw new Error('fail');
+  } catch (error: any) {
+    throw new Error(error);
+  }
+};

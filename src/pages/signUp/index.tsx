@@ -9,7 +9,7 @@ import { useRouter } from 'next/router';
 import axios from 'axios';
 import useForm from '@/hooks/useForm';
 import { getAdministrative, signUp } from '../../modules/function/signInUp.ts';
-import SignUpValidation from '@/modules/function/validation.ts';
+import { signUpValidation } from '@/modules/function/validation.ts';
 
 // export default function SignUp({ city }) { // TODO 추후 주소, 알림동의 추가
 export default function SignUp() {
@@ -37,7 +37,7 @@ export default function SignUp() {
   const { value, errors, isLoading, handleSubmit, handleChange } = useForm({
     initValue,
     onSubmit: handleFormSubmit,
-    validate: SignUpValidation,
+    validate: signUpValidation,
   });
 
   // const [isChecked, setIsChecked] = useState(false);
