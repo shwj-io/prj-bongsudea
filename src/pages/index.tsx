@@ -3,6 +3,7 @@ import Image from 'next/image';
 import { Inter } from 'next/font/google';
 import styles from '@/styles/Home.module.css';
 import { createClient } from '@/utils/server';
+import axios from 'axios';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -19,14 +20,18 @@ export default function Home() {
     });
   };
 
+  const eamilLogin = () => {
+    axios.post('loca');
+  };
+
   console.log(
     'supabase.auth.user()',
     supabase.auth.getUser().then(res => console.log('res', res))
   );
-  console.log(
-    'supabase.auth.user()',
-    supabase.auth.getSession().then(res => console.log('res', res))
-  );
+  // console.log(
+  //   'supabase.auth.user()',
+  //   supabase.auth.getSession().then(res => console.log('res', res))
+  // );
   return (
     <>
       <Head>
