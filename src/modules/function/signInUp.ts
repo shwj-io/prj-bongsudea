@@ -1,4 +1,5 @@
 import axios from 'axios';
+import Cookies from 'js-cookie';
 
 export const getAdministrative = async () => {
   try {
@@ -23,6 +24,8 @@ export const signUp = async (email: string, password: string) => {
     });
 
     if (response.data.data) {
+      Cookies.set('accessToken', response.data.data.access_token);
+      Cookies.set('username', response.data.data.username);
       return response.data.data;
     }
     throw new Error('fail');
