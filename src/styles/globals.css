@@ -6,3 +6,12 @@ button,
 a {
   cursor: pointer;
 }
+
+body {
+  width: 100%;
+  height: 100%;
+}
+
+#__next {
+  height: 100vh;
+}
