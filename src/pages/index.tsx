@@ -1,24 +1,10 @@
 import Head from 'next/head';
-import Image from 'next/image';
-import { Inter } from 'next/font/google';
 import styles from '@/styles/Home.module.css';
-import { createClient } from '@/utils/server';
-import axios from 'axios';
-
-const inter = Inter({ subsets: ['latin'] });
+import { useUserStore } from '@/store/user';
+import Link from 'next/link';
 
 export default function Home() {
-  const supabase = createClient();
-  const handleClick = async () => {
-    const { data, error } = await supabase.auth.signInWithOAuth({
-      provider: 'github',
-    });
-  };
-  const googlehandleClick = async () => {
-    const { data, error } = await supabase.auth.signInWithOAuth({
-      provider: 'google',
-    });
-  };
+  const { accessToken, username, saveUser, removeUser } = useUserStore();
 
   const eamilLogin = () => {
     axios.post('http://localhost:3000/api/auth/login/email', {
@@ -44,7 +30,17 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        <button onClick={() => eamilLogin()}>로그인</button>
+        <div>{username}</div>
+        <div>{username ? '회원' : '비회원'}</div>
+        <button>
+          <Link href="/login">로그인</Link>
+        </button>
+        <button>
+          <Link href="/signUp">회원가입</Link>
+        </button>
+        <button>
+          <Link href="/findPassword">비밀번호찾기</Link>
+        </button>
       </main>
     </>
   );

@@ -9,6 +9,9 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@emotion/react": "^11.11.4",
+    "@emotion/styled": "^11.11.5",
+    "@mui/material": "^5.15.16",
     "@radix-ui/themes": "^3.0.2",
     "@supabase/ssr": "^0.3.0",
     "@supabase/supabase-js": "^2.42.4",
