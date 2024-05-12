@@ -19,19 +19,13 @@ export default async function handler(
 
     if (error) throw error;
 
-    cookies().set({
-      name: 'access_token',
-      value: access_token,
-      httpOnly: true,
-      path: '/',
-    });
+    const expiresDate = new Date(data.session.expires_at * 1000).toUTCString();
 
-    cookies().set({
-      name: 'refresh_token',
-      value: refresh_token,
-      httpOnly: true,
-      path: '/',
-    });
+    const accessTokenCookie = `access_token=${access_token}; Path=/; Expires=${expiresDate}`;
+    const refreshTokenCookie = `refresh_token=${refresh_token}; Path=/; Max-Age=${60 * 60 * 24 * 7}`;
+
+    res.setHeader('Set-Cookie', [accessTokenCookie, refreshTokenCookie]);
+    // res.setHeader('Set-Cookie', { refresh_token });
 
     res.status(200).json({
       user: data.session.user,
