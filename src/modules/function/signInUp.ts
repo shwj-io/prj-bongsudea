@@ -43,8 +43,7 @@ export const loginEmail = async (email: string, password: string) => {
     );
 
     if (response.status === 200) {
-      console.log(response.data.access_token); //토큰
-      return response.data.user;
+      return response.data;
     }
 
     throw new Error('fail');

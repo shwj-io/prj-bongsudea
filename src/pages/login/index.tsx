@@ -19,16 +19,19 @@ import useForm from '@/hooks/useForm';
 import { getReady } from '@/modules/function/common';
 import { loginValidation } from '@/modules/function/validation';
 import { loginEmail } from '@/modules/function/signInUp';
+import { useUserStore } from '@/store/user';
 
 export default function Login() {
   const initValue = { email: '', password: '' };
   const router = useRouter();
+  const { accessToken, username, saveUser, removeUser } = useUserStore();
 
   const handleFormSubmit = async value => {
     try {
       const response = await loginEmail(value.email, value.password);
       if (response) {
         router.push('/');
+        saveUser(response.access_token, response.user.user_metadata.username);
         return response;
       }
     } catch (error: any) {

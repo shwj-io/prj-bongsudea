@@ -4,16 +4,18 @@ import BasicButton from '@/components/button/index.tsx';
 import BasicSelect from '@/components/select/index.tsx';
 import { Checkbox, FormControlLabel } from '@mui/material';
 // css
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import axios from 'axios';
 import useForm from '@/hooks/useForm';
 import { getAdministrative, signUp } from '../../modules/function/signInUp.ts';
 import { signUpValidation } from '@/modules/function/validation.ts';
+import { useUserStore } from '@/store/user.ts';
 
 // export default function SignUp({ city }) { // TODO 추후 주소, 알림동의 추가
 export default function SignUp() {
   const router = useRouter();
+  const { accessToken, username, saveUser, removeUser } = useUserStore();
   const initValue = {
     email: '',
     password: '',
@@ -27,6 +29,7 @@ export default function SignUp() {
       const response = await signUp(value.email, value.password);
       if (response) {
         router.push('/');
+        saveUser(response.access_token, response.username);
         return response;
       }
     } catch (error: any) {
