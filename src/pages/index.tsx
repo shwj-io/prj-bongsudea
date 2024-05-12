@@ -21,13 +21,16 @@ export default function Home() {
   };
 
   const eamilLogin = () => {
-    axios.post('loca');
+    axios.post('http://localhost:3000/api/auth/login/email', {
+      email: 'master@test.com',
+      password: 123456789,
+    });
   };
 
-  console.log(
-    'supabase.auth.user()',
-    supabase.auth.getUser().then(res => console.log('res', res))
-  );
+  // console.log(
+  //   'supabase.auth.user()',
+  //   supabase.auth.getUser().then(res => console.log('res', res))
+  // );
   // console.log(
   //   'supabase.auth.user()',
   //   supabase.auth.getSession().then(res => console.log('res', res))
@@ -40,7 +43,9 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main>ㅇ</main>
+      <main>
+        <button onClick={() => eamilLogin()}>로그인</button>
+      </main>
     </>
   );
 }
