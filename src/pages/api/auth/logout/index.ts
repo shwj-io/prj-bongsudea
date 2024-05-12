@@ -1,6 +1,5 @@
 import { createClient } from '@/utils/server';
 import { NextApiRequest, NextApiResponse } from 'next';
-import { cookies } from 'next/headers';
 
 export default async function handler(
   req: NextApiRequest,
@@ -9,34 +8,13 @@ export default async function handler(
   const { email, password } = req.body;
   const supabase = createClient();
   try {
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email,
-      password: password.toString(),
-    });
-
-    const access_token = data?.session.access_token;
-    const refresh_token = data?.session.refresh_token;
+    const { error } = await supabase.auth.signOut();
 
     if (error) throw error;
 
-    cookies().set({
-      name: 'access_token',
-      value: access_token,
-      httpOnly: true,
-      path: '/',
-    });
-
-    cookies().set({
-      name: 'refresh_token',
-      value: refresh_token,
-      httpOnly: true,
-      path: '/',
-    });
-
     res.status(200).json({
       user: data.session.user,
-      access_token,
-      refresh_token,
+      access_token: data.session.access_token,
       message: '로그인 성공했습니다.',
       status: 200,
     });

@@ -27,7 +27,7 @@ export default async function handler(
   if (query?.city) {
     try {
       const { data, error } = await supabase
-        .from('administrative')
+        .from('resion')
         .select()
         .eq('main_city', query.city);
       const transformedData = groupByCity(data);
@@ -37,7 +37,7 @@ export default async function handler(
     }
   } else {
     try {
-      const { data, error } = await supabase.from('administrative').select();
+      const { data, error } = await supabase.from('resion').select();
       const transformedData = groupByCity(data);
 
       res.status(200).json({ data: transformedData, error: error });
