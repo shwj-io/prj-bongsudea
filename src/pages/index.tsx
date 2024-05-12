@@ -6,21 +6,6 @@ import Link from 'next/link';
 export default function Home() {
   const { accessToken, username, saveUser, removeUser } = useUserStore();
 
-  const eamilLogin = () => {
-    axios.post('http://localhost:3000/api/auth/login/email', {
-      email: 'master@test.com',
-      password: 123456789,
-    });
-  };
-
-  // console.log(
-  //   'supabase.auth.user()',
-  //   supabase.auth.getUser().then(res => console.log('res', res))
-  // );
-  // console.log(
-  //   'supabase.auth.user()',
-  //   supabase.auth.getSession().then(res => console.log('res', res))
-  // );
   return (
     <>
       <Head>
