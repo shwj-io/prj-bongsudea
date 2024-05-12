@@ -1,10 +1,7 @@
 import Head from 'next/head';
-import Image from 'next/image';
-import { Inter } from 'next/font/google';
 import styles from '@/styles/Home.module.css';
 import { useUserStore } from '@/store/user';
-
-const inter = Inter({ subsets: ['latin'] });
+import Link from 'next/link';
 
 export default function Home() {
   const { accessToken, username, saveUser, removeUser } = useUserStore();
@@ -19,8 +16,16 @@ export default function Home() {
       </Head>
       <main>
         <div>{username}</div>
-        <div>{accessToken}</div>
         <div>{username ? '회원' : '비회원'}</div>
+        <button>
+          <Link href="/login">로그인</Link>
+        </button>
+        <button>
+          <Link href="/signUp">회원가입</Link>
+        </button>
+        <button>
+          <Link href="/findPassword">비밀번호찾기</Link>
+        </button>
       </main>
     </>
   );
