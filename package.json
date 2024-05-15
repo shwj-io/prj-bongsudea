@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@supabase/ssr": "^0.3.0",
-    "@supabase/supabase-js": "^2.42.4",
+    "@supabase/supabase-js": "^2.43.1",
     "@tanstack/react-query": "^5.28.12",
     "@tanstack/react-query-devtools": "^5.28.12",
     "@vanilla-extract/css": "^1.14.2",

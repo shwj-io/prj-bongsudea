@@ -1,6 +1,5 @@
-import { createClient } from '@/utils/server';
+import { createClient } from '@/utils/createClient';
 import { NextApiRequest, NextApiResponse } from 'next';
-import { cookies } from 'next/headers';
 
 export default async function handler(
   req: NextApiRequest,
@@ -26,12 +25,11 @@ export default async function handler(
       path: '/',
     });
 
-    cookies().set({
-      name: 'refresh_token',
-      value: refresh_token,
-      httpOnly: true,
-      path: '/',
-    });
+    // const accessTokenCookie = `access_token=${access_token}; Path=/; Expires=${expiresDate}`;
+    const accessTokenCookie = `access_token=${access_token}; Path=/;`;
+    const refreshTokenCookie = `refresh_token=${refresh_token}; Path=/;`;
+
+    res.setHeader('Set-Cookie', [accessTokenCookie, refreshTokenCookie]);
 
     res.status(200).json({
       user: data.session.user,
