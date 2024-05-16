@@ -20,19 +20,11 @@ export default async function handler(
 
     const expiresDate = new Date(data.session.expires_at * 1000).toUTCString();
 
-<<<<<<< HEAD
-    const accessTokenCookie = `access_token=${access_token}; Path=/; Expires=${expiresDate}`;
-    const refreshTokenCookie = `refresh_token=${refresh_token}; Path=/; Max-Age=${60 * 60 * 24 * 7}`;
-
-    res.setHeader('Set-Cookie', [accessTokenCookie, refreshTokenCookie]);
-    // res.setHeader('Set-Cookie', { refresh_token });
-=======
     // const accessTokenCookie = `access_token=${access_token}; Path=/; Expires=${expiresDate}`;
     const accessTokenCookie = `access_token=${access_token}; Path=/;`;
     const refreshTokenCookie = `refresh_token=${refresh_token}; Path=/;`;
 
     res.setHeader('Set-Cookie', [accessTokenCookie, refreshTokenCookie]);
->>>>>>> feature/api
 
     res.status(200).json({
       user: data.session.user,
