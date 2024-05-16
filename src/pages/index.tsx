@@ -18,9 +18,12 @@ export default function Home() {
   //   supabase.auth.getUser().then(res => console.log('res', res))
   // );
   // console.log(
-  //   'supabase.auth.user()',
-  //   supabase.auth.getSession().then(res => console.log('res', res))
+  //   'auth',
+  //   supabase.auth.getUser().then(res => {
+  //     console.log('res', res);
+  //   })
   // );
+
   return (
     <>
       <Head>

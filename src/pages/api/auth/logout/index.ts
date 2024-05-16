@@ -1,4 +1,4 @@
-import { createClient } from '@/utils/server';
+import { createClient } from '@/utils/createClient';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 export default async function handler(

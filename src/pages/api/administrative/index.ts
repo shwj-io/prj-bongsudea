@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { createClient } from '@/utils/server';
+import { createClient } from '@/utils/createClient';
 
 function groupByCity(data) {
   let subCityId = 1; // Start the sub-city id from 1
