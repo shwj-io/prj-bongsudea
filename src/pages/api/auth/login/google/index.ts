@@ -11,7 +11,7 @@ export default async function handler(
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: 'http://localhost:3000',
+        redirectTo: 'http://localhost:3000/login/googleAuth',
       },
     });
 
