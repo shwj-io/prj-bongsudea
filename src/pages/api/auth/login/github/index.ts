@@ -15,11 +15,13 @@ export default async function handler(
     });
 
     if (error) throw error;
-    res.status(200).json({
-      data: data,
-      message: '깃허브로그인 링크 발급이 완료되었습니다.',
-      status: 200,
-    });
+
+    res.redirect(data.url);
+    // res.status(200).json({
+    //   data: data,
+    //   message: '깃허브로그인 링크 발급이 완료되었습니다.',
+    //   status: 200,
+    // });
   } catch (error) {
     res
       .status(400)
