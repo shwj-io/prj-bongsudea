@@ -18,7 +18,7 @@ import { useRouter } from 'next/router';
 import useForm from '@/hooks/useForm';
 import { getReady } from '@/modules/function/common';
 import { loginValidation } from '@/modules/function/validation';
-import { loginEmail, loginGoogle } from '@/modules/service/auth';
+import { loginEmail, loginGithub, loginGoogle } from '@/modules/service/auth';
 import { useUserStore } from '@/store/user';
 import Cookies from 'js-cookie';
 
@@ -51,6 +51,18 @@ export default function Login() {
   const getGoogleUrl = async () => {
     try {
       const response = await loginGoogle();
+      if (response.data.url) {
+        router.replace(response.data.url);
+        return response;
+      }
+    } catch (error: any) {
+      throw new Error(error);
+    }
+  };
+
+  const getGithubUrl = async () => {
+    try {
+      const response = await loginGithub();
       if (response.data.url) {
         router.replace(response.data.url);
         return response;
@@ -100,7 +112,9 @@ export default function Login() {
         <BasicButton type="button" onClick={getGoogleUrl}>
           구글 로그인
         </BasicButton>
-        <BasicButton type="button">카카오 로그인</BasicButton>
+        <BasicButton type="button" onClick={getGithubUrl}>
+          깃허브 로그인
+        </BasicButton>
       </div>
     </div>
   );

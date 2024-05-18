@@ -15,3 +15,7 @@ export const loginEmail = (email: string, password: string) => {
 export const loginGoogle = () => {
   return axiosReq.GET(`/auth/login/google`);
 };
+
+export const loginGithub = () => {
+  return axiosReq.GET(`/auth/login/github`);
+};
