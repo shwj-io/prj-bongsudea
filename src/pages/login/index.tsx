@@ -18,7 +18,7 @@ import { useRouter } from 'next/router';
 import useForm from '@/hooks/useForm';
 import { getReady } from '@/modules/function/common';
 import { loginValidation } from '@/modules/function/validation';
-import { loginEmail, loginGoogle } from '@/modules/function/signInUp';
+import { loginEmail, loginGoogle } from '@/modules/service/auth';
 import { useUserStore } from '@/store/user';
 import Cookies from 'js-cookie';
 
