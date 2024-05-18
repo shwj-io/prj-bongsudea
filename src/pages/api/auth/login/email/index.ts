@@ -1,6 +1,5 @@
-import { createClient } from '@/utils/server';
+import { createClient } from '@/utils/createClient';
 import { NextApiRequest, NextApiResponse } from 'next';
-import { cookies } from 'next/headers';
 
 export default async function handler(
   req: NextApiRequest,
@@ -21,11 +20,11 @@ export default async function handler(
 
     const expiresDate = new Date(data.session.expires_at * 1000).toUTCString();
 
-    const accessTokenCookie = `access_token=${access_token}; Path=/; Expires=${expiresDate}`;
-    const refreshTokenCookie = `refresh_token=${refresh_token}; Path=/; Max-Age=${60 * 60 * 24 * 7}`;
+    // const accessTokenCookie = `access_token=${access_token}; Path=/; Expires=${expiresDate}`;
+    const accessTokenCookie = `access_token=${access_token}; Path=/;`;
+    const refreshTokenCookie = `refresh_token=${refresh_token}; Path=/;`;
 
     res.setHeader('Set-Cookie', [accessTokenCookie, refreshTokenCookie]);
-    // res.setHeader('Set-Cookie', { refresh_token });
 
     res.status(200).json({
       user: data.session.user,

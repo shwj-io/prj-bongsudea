@@ -1,5 +1,6 @@
-import { createClient } from '@/utils/server';
+import { createClient } from '@/utils/createClient';
 import { NextApiRequest, NextApiResponse } from 'next';
+import { redirect } from 'next/dist/server/api-utils';
 
 export default async function handler(
   req: NextApiRequest,
@@ -10,11 +11,12 @@ export default async function handler(
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: 'http://localhost:3000',
+        redirectTo: 'http://localhost:3000/login/googleAuth',
       },
     });
 
     if (error) throw error;
+
     res.status(200).json({
       data: data,
       message: '구글로그인 링크 발급이 완료되었습니다.',

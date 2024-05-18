@@ -1,4 +1,4 @@
-import { createClient } from '@/utils/server';
+import { createClient } from '@/utils/createClient';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 export default async function handler(
@@ -15,6 +15,8 @@ export default async function handler(
     });
 
     if (error) throw error;
+
+    // res.redirect(data.url);
     res.status(200).json({
       data: data,
       message: '깃허브로그인 링크 발급이 완료되었습니다.',
