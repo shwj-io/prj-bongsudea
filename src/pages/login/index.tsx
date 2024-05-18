@@ -18,7 +18,7 @@ import { useRouter } from 'next/router';
 import useForm from '@/hooks/useForm';
 import { getReady } from '@/modules/function/common';
 import { loginValidation } from '@/modules/function/validation';
-import { loginEmail } from '@/modules/function/signInUp';
+import { loginEmail, loginGoogle } from '@/modules/function/signInUp';
 import { useUserStore } from '@/store/user';
 import Cookies from 'js-cookie';
 
@@ -47,6 +47,18 @@ export default function Login() {
     onSubmit: handleFormSubmit,
     validate: loginValidation,
   });
+
+  const getGoogleUrl = async () => {
+    try {
+      const response = await loginGoogle();
+      if (response.data.url) {
+        router.replace(response.data.url);
+        return response;
+      }
+    } catch (error: any) {
+      throw new Error(error);
+    }
+  };
 
   return (
     <div className={emailLoginContainer}>
@@ -85,7 +97,9 @@ export default function Login() {
         <div className={line} />
       </div>
       <div className={socialLoginContainer}>
-        <BasicButton type="button">구글 로그인</BasicButton>
+        <BasicButton type="button" onClick={getGoogleUrl}>
+          구글 로그인
+        </BasicButton>
         <BasicButton type="button">카카오 로그인</BasicButton>
       </div>
     </div>
