@@ -18,8 +18,9 @@ import { useRouter } from 'next/router';
 import useForm from '@/hooks/useForm';
 import { getReady } from '@/modules/function/common';
 import { loginValidation } from '@/modules/function/validation';
-import { loginEmail } from '@/modules/function/signInUp';
+import { loginEmail, loginGithub, loginGoogle } from '@/modules/service/auth';
 import { useUserStore } from '@/store/user';
+import Cookies from 'js-cookie';
 
 export default function Login() {
   const initValue = { email: '', password: '' };
@@ -32,6 +33,8 @@ export default function Login() {
       if (response) {
         router.push('/');
         saveUser(response.access_token, response.user.user_metadata.username);
+        Cookies.set('accessToken', response.access_token);
+        Cookies.set('username', response.user.user_metadata.username);
         return response;
       }
     } catch (error: any) {
@@ -44,6 +47,30 @@ export default function Login() {
     onSubmit: handleFormSubmit,
     validate: loginValidation,
   });
+
+  const getGoogleUrl = async () => {
+    try {
+      const response = await loginGoogle();
+      if (response.data.url) {
+        router.replace(response.data.url);
+        return response;
+      }
+    } catch (error: any) {
+      throw new Error(error);
+    }
+  };
+
+  const getGithubUrl = async () => {
+    try {
+      const response = await loginGithub();
+      if (response.data.url) {
+        router.replace(response.data.url);
+        return response;
+      }
+    } catch (error: any) {
+      throw new Error(error);
+    }
+  };
 
   return (
     <div className={emailLoginContainer}>
@@ -82,8 +109,12 @@ export default function Login() {
         <div className={line} />
       </div>
       <div className={socialLoginContainer}>
-        <BasicButton type="button">구글 로그인</BasicButton>
-        <BasicButton type="button">카카오 로그인</BasicButton>
+        <BasicButton type="button" onClick={getGoogleUrl}>
+          구글 로그인
+        </BasicButton>
+        <BasicButton type="button" onClick={getGithubUrl}>
+          깃허브 로그인
+        </BasicButton>
       </div>
     </div>
   );

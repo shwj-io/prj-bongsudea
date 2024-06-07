@@ -1,13 +1,19 @@
 import { Button } from '@mui/material';
 import { grey } from '@mui/material/colors';
+// css
 import { ReactNode } from 'react';
 
 type BasicButtonProps = {
   children: ReactNode;
   type: 'button' | 'submit' | 'reset' | undefined;
+  onClick?: () => Promise<any>;
 };
 
-export default function BasicButton({ children, type }: BasicButtonProps) {
+export default function BasicButton({
+  children,
+  type,
+  onClick,
+}: BasicButtonProps) {
   return (
     <Button
       type={type}
@@ -22,6 +28,7 @@ export default function BasicButton({ children, type }: BasicButtonProps) {
         padding: '16.5px 14px',
         fontSize: '15px',
       }}
+      onClick={onClick}
     >
       {children}
     </Button>

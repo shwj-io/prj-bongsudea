@@ -1,28 +1,35 @@
-import Head from 'next/head';
 import styles from '@/styles/Home.module.css';
-import { useUserStore } from '@/store/user';
+import Head from 'next/head';
 import Link from 'next/link';
+// css
+import { useEffect } from 'react';
+import Cookies from 'js-cookie';
+import { useUserStore } from '@/store/user';
+import { createClient } from '@/utils/server';
 
 export default function Home() {
   const { accessToken, username, saveUser, removeUser } = useUserStore();
+  const supabase = createClient();
 
-  const eamilLogin = () => {
-    axios.post('http://localhost:3000/api/auth/login/email', {
-      email: 'master@test.com',
-      password: 123456789,
-    });
-  };
+  useEffect(() => {
+    const params = new URLSearchParams(window?.location.hash.substring(1));
+    const googleToken = params.get('access_token');
+    const googleRefreshToken = params.get('refresh_token');
 
-  // console.log(
-  //   'supabase.auth.user()',
-  //   supabase.auth.getUser().then(res => console.log('res', res))
-  // );
-  // console.log(
-  //   'auth',
-  //   supabase.auth.getUser().then(res => {
-  //     console.log('res', res);
-  //   })
-  // );
+    const getUser = async () => {
+      const user = await supabase.auth.getUser();
+      saveUser(googleToken, user.data.user?.email);
+    };
+
+    if (googleToken) {
+      getUser();
+      Cookies.set('access_token', googleToken, { expires: 0.05 });
+      Cookies.set('refresh_token', googleRefreshToken, { expires: 14 });
+      // router.push('/');
+    } else {
+      console.log('로그인 재시도하세요.');
+    }
+  }, []);
 
   return (
     <>

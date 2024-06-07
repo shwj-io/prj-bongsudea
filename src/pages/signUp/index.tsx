@@ -8,7 +8,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import axios from 'axios';
 import useForm from '@/hooks/useForm';
-import { getAdministrative, signUp } from '../../modules/function/signInUp.ts';
+import { getAdministrative, signUp } from '../../modules/service/auth.ts';
 import { signUpValidation } from '@/modules/function/validation.ts';
 import { useUserStore } from '@/store/user.ts';
 

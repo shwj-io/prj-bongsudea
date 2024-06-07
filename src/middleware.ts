@@ -1,27 +1,25 @@
 import { NextRequest, NextResponse } from 'next/server';
-// import { useUserStore } from './store/user';
+import { cookies } from 'next/headers';
 
-// const protectedRoutes = ['/myPage'];
-// const publicRoutes = ['/login', '/signUp', 'findPassword', '/'];
+const protectedRoutes = ['/myPage'];
+const publicRoutes = ['/login', '/signUp', 'findPassword'];
 
 export default async function middleware(req: NextRequest) {
-  //   // const { accessToken, username, saveUser, removeUser } = useUserStore();
-  //   const local = localStorage?.getItem('state');
-  //   const { accessToken } = local;
-  //   const path = req.nextUrl.pathname;
-  //   const isProtectedRoute = protectedRoutes.includes(path);
-  //   const isPublicRoute = publicRoutes.includes(path);
-  //   if (isProtectedRoute && accessToken) {
-  //     return NextResponse.redirect(new URL('/login', req.nextUrl));
-  //   }
-  //   if (
-  //     isPublicRoute &&
-  //     accessToken &&
-  //     !req.nextUrl.pathname.startsWith('/dashboard')
-  //   ) {
-  //     return NextResponse.redirect(new URL('/dashboard', req.nextUrl));
-  //   }
-  //   return NextResponse.next();
+  const path = req.nextUrl.pathname;
+  const isProtectedRoute = protectedRoutes.includes(path);
+  const isPublicRoute = publicRoutes.includes(path);
+
+  const cookie = cookies().get('accessToken')?.value;
+
+  if (isProtectedRoute && !cookie) {
+    return NextResponse.redirect(new URL('/login', req.nextUrl));
+  }
+
+  if (isPublicRoute && cookie) {
+    return NextResponse.redirect(new URL('/', req.nextUrl));
+  }
+
+  return NextResponse.next();
 }
 
 export const config = {
