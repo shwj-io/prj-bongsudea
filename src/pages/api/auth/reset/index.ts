@@ -1,4 +1,5 @@
-import { createClient } from '@/utils/createClient';
+import createClient from '@/utils/createClient';
+import { createSupabse } from '@/utils/server';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 export default async function handler(
@@ -6,11 +7,14 @@ export default async function handler(
   res: NextApiResponse
 ) {
   const { email } = req.body;
-  const supabase = createClient();
+  const supabase = createClient(req, res);
+  // const supabase = createSupabse();
   try {
     // 패스워드를 리셋한다.
     const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: 'http://localhost:3000/password-change',
+      // redirectTo: 'http://localhost:3000/password-change',
+      // redirectTo: 'http://localhost:3000/test',
+      redirectTo: 'http://localhost:3000/api/auth/login/checkuser',
     });
 
     if (error) throw error;

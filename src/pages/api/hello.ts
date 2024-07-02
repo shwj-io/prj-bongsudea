@@ -1,5 +1,5 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-import { createClient } from '@/utils/createClient';
+import createClient from '@/utils/createClient';
 import type { NextApiRequest, NextApiResponse } from 'next';
 // import { redirect } from 'next/dist/server/api-utils';
 import { redirect } from 'next/navigation';
@@ -12,7 +12,8 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
 ) {
-  const supabase = createClient();
+  const supabase = createClient(req, res);
+  console.log('req @@@@@@@@@@@@@@', req.cookies);
   // supabase
   //   .from('notes')
   //   .select()
@@ -26,19 +27,19 @@ export default async function handler(
   //   .then(res => {
   //     console.log('res', res);
   //   });
-  const { data, error } = await supabase.from('profiles').select(
-    `
-      id,
-      username,
-      avatar_url,
-      email,
-      user_type (
-        id,
-        type_name,
-        type_role
-      )
-    `
-  );
+  // const { data, error } = await supabase.from('profiles').select(
+  //   `
+  //     id,
+  //     username,
+  //     avatar_url,
+  //     email,
+  //     user_type (
+  //       id,
+  //       type_name,
+  //       type_role
+  //     )
+  //   `
+  // );
   // const { data, error } = await supabase.from('user_type').select(
   //   `
   //     id,
