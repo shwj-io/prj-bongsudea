@@ -1,16 +1,18 @@
-import { createClient } from '@/utils/createClient';
+import createClient from '@/utils/createClient';
+import { createSupabse } from '@/utils/server';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const supabase = createClient();
+  // const supabase = createClient();
+  const supabase = createClient(req, res);
   try {
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: 'github',
       options: {
-        redirectTo: 'http://localhost:3000',
+        redirectTo: 'http://localhost:3000/test',
       },
     });
 

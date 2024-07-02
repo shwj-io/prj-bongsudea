@@ -1,5 +1,6 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-import { createClient } from '@/utils/createClient';
+import createClient from '@/utils/createClient';
+import { createSupabse } from '@/utils/server';
 import type { NextApiRequest, NextApiResponse } from 'next';
 // import { redirect } from 'next/dist/server/api-utils';
 
@@ -15,7 +16,8 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
 ) {
-  const supabase = createClient();
+  // const supabase = createSupabse();
+  const supabase = createClient(req, res);
   const { email, password } = req.body;
   try {
     const { data, error } = await supabase.auth.signUp({
@@ -28,14 +30,22 @@ export default async function handler(
         },
       },
     });
+
+    const accessToken = data?.session.access_token;
+    const refreshToken = data?.session.refresh_token;
     const userInfo = {
       id: data.user?.id,
       email: data.user?.email,
       username: data.user?.user_metadata.username,
-      access_token: data.session?.access_token,
-      refresh_token: data.session?.refresh_token,
+      access_token: accessToken,
+      refresh_token: refreshToken,
       expires_at: data.session?.expires_at,
     };
+
+    const accessTokenCookie = `access_token=${accessToken}; Path=/;`;
+    const refreshTokenCookie = `refresh_token=${refreshToken}; Path=/;`;
+
+    res.setHeader('Set-Cookie', [accessTokenCookie, refreshTokenCookie]);
 
     if (error) throw error; // error가 있다면 catch 블록으로 넘어갑니다.
 

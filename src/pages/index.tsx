@@ -1,9 +1,11 @@
 import Head from 'next/head';
-import styles from '@/styles/Home.module.css';
 import { useUserStore } from '@/store/user';
 import Link from 'next/link';
+import { createSupabse } from '@/utils/server';
+import axios from 'axios';
 
 export default function Home() {
+  const supabase = createSupabse();
   const { accessToken, username, saveUser, removeUser } = useUserStore();
 
   const eamilLogin = () => {
@@ -17,12 +19,12 @@ export default function Home() {
   //   'supabase.auth.user()',
   //   supabase.auth.getUser().then(res => console.log('res', res))
   // );
-  // console.log(
-  //   'auth',
-  //   supabase.auth.getUser().then(res => {
-  //     console.log('res', res);
-  //   })
-  // );
+  console.log(
+    'auth',
+    supabase.auth.getUser().then(res => {
+      console.log('res', res);
+    })
+  );
 
   return (
     <>
