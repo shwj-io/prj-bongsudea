@@ -6,7 +6,6 @@ import { useUserStore } from '@/store/user';
 import { logout } from '@/modules/service/auth';
 
 export default function Home() {
-  const supabase = createSupabse();
   const { accessToken, username, saveUser, removeUser } = useUserStore();
 
   const logoutUser = async () => {
@@ -40,10 +39,10 @@ export default function Home() {
           <Link href="/login">로그인</Link>
         </button>
         <button>
-          <Link href="/signUp">회원가입</Link>
+          <Link href="/sign-up">회원가입</Link>
         </button>
         <button>
-          <Link href="/findPassword">비밀번호찾기</Link>
+          <Link href="/find-password">비밀번호찾기</Link>
         </button>
         <button onClick={logoutUser}>로그아웃</button>
       </main>
