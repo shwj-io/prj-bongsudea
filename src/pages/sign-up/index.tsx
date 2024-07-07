@@ -1,4 +1,4 @@
-import { form, selectContainer, signUpContainer } from './style.css.ts';
+import { title, form, selectContainer, signUpContainer } from './style.css.ts';
 import BasicInput from '@/components/input/index.tsx';
 import BasicButton from '@/components/button/index.tsx';
 import BasicSelect from '@/components/select/index.tsx';
@@ -54,6 +54,8 @@ export default function SignUp() {
 
   return (
     <div className={signUpContainer}>
+      <h1 className={title}>Sign Up</h1>
+
       <form method="post" onSubmit={e => handleSubmit(e)} className={form}>
         <BasicInput
           placeholder="아이디"

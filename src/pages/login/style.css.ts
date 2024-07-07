@@ -17,6 +17,11 @@ export const emailLogin = style({
   gap: '10px',
 });
 
+export const title = style({
+  textAlign: 'center',
+  marginBottom: '30px',
+});
+
 export const form = style({
   display: 'flex',
   flexDirection: 'column',

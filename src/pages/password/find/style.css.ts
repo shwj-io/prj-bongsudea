@@ -5,8 +5,14 @@ export const findPasswordContainer = style({
   flex: 1,
   justifyContent: 'center',
   alignItems: 'center',
+  flexDirection: 'column',
   width: '100%',
   height: '100%',
+});
+
+export const title = style({
+  textAlign: 'center',
+  marginBottom: '30px',
 });
 
 export const form = style({

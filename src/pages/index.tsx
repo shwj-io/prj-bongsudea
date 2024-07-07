@@ -42,7 +42,7 @@ export default function Home() {
           <Link href="/sign-up">회원가입</Link>
         </button>
         <button>
-          <Link href="/find-password">비밀번호찾기</Link>
+          <Link href="/password/find">비밀번호찾기</Link>
         </button>
         <button onClick={logoutUser}>로그아웃</button>
       </main>

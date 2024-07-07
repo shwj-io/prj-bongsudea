@@ -9,11 +9,11 @@ export const signUp = (email: string, password: string) => {
 };
 
 export const logout = () => {
-  return axiosReq.GET(`/auth/signup`);
+  return axiosReq.GET(`/auth/logout`);
 };
 
 export const loginEmail = (email: string, password: string) => {
-  return axiosReq.POST(`/auth/logout`, { type: 'email', email, password });
+  return axiosReq.POST(`/auth/login/email`, { email, password });
 };
 
 export const loginGoogle = () => {
@@ -22,4 +22,12 @@ export const loginGoogle = () => {
 
 export const loginGithub = () => {
   return axiosReq.GET(`/auth/login/github`);
+};
+
+export const resetPassword = (email: string) => {
+  return axiosReq.POST(`/auth/reset`, { email });
+};
+
+export const updatePassword = (password: string) => {
+  return axiosReq.POST(`/auth/update`, { password });
 };

@@ -2,6 +2,7 @@ import {
   emailLoginContainer,
   inputContainer,
   link,
+  title,
   form,
   linkContainer,
   lineContainer,
@@ -14,13 +15,12 @@ import BasicInput from '@/components/input';
 import BasicButton from '@/components/button';
 import Link from 'next/link';
 // css
-import { useRouter } from 'next/router';
 import useForm from '@/hooks/useForm';
+import { useRouter } from 'next/router';
 import { getReady } from '@/modules/function/common';
 import { loginValidation } from '@/modules/function/validation';
 import { loginEmail, loginGithub, loginGoogle } from '@/modules/service/auth';
 import { useUserStore } from '@/store/user';
-import Cookies from 'js-cookie';
 
 export default function Login() {
   const initValue = { email: '', password: '' };
@@ -33,8 +33,6 @@ export default function Login() {
       if (response) {
         router.push('/');
         saveUser(response.access_token, response.user.user_metadata.username);
-        Cookies.set('accessToken', response.access_token);
-        Cookies.set('username', response.user.user_metadata.username);
         return response;
       }
     } catch (error: any) {
@@ -75,6 +73,7 @@ export default function Login() {
   return (
     <div className={emailLoginContainer}>
       <div className={emailLogin}>
+        <h1 className={title}>Login</h1>
         <form method="post" onSubmit={e => handleSubmit(e)} className={form}>
           <div className={inputContainer}>
             <BasicInput
@@ -94,11 +93,11 @@ export default function Login() {
           {/* <Link href="/findPassword" className={link}>
             비밀번호 찾기
           </Link> */}
-          <div onClick={getReady} className={link}>
+          <Link href="/password/find" className={link}>
             비밀번호 찾기
-          </div>
+          </Link>
           <div>|</div>
-          <Link href="/signUp" className={link}>
+          <Link href="/sign-up" className={link}>
             회원가입
           </Link>
         </div>
