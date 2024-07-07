@@ -22,7 +22,7 @@ export default async function handler(
     if (error) throw error;
 
     if (data) {
-      res.redirect('http://localhost:3000/test/password');
+      res.redirect('http://localhost:3000/password/reset');
     }
   } catch (error) {
     res.status(400).json({
