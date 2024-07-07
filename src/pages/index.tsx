@@ -1,30 +1,28 @@
+import styles from '@/styles/Home.module.css';
 import Head from 'next/head';
-import { useUserStore } from '@/store/user';
 import Link from 'next/link';
-import { createSupabse } from '@/utils/server';
-import axios from 'axios';
+// css
+import { useUserStore } from '@/store/user';
+import { logout } from '@/modules/service/auth';
 
 export default function Home() {
-  const supabase = createSupabse();
   const { accessToken, username, saveUser, removeUser } = useUserStore();
 
-  const eamilLogin = () => {
-    axios.post('http://localhost:3000/api/auth/login/email', {
-      email: 'master@test.com',
-      password: 123456789,
-    });
+  const logoutUser = async () => {
+    try {
+      const response = await logout();
+      console.log(response);
+      if (response.status === 200) {
+        return alert('로그아웃 성공');
+      }
+    } catch (error: any) {
+      if (error.status === 400) {
+        return alert('로그아웃 실패');
+      } else {
+        throw new Error(error);
+      }
+    }
   };
-
-  // console.log(
-  //   'supabase.auth.user()',
-  //   supabase.auth.getUser().then(res => console.log('res', res))
-  // );
-  console.log(
-    'auth',
-    supabase.auth.getUser().then(res => {
-      console.log('res', res);
-    })
-  );
 
   return (
     <>
@@ -41,11 +39,12 @@ export default function Home() {
           <Link href="/login">로그인</Link>
         </button>
         <button>
-          <Link href="/signUp">회원가입</Link>
+          <Link href="/sign-up">회원가입</Link>
         </button>
         <button>
-          <Link href="/findPassword">비밀번호찾기</Link>
+          <Link href="/password/find">비밀번호찾기</Link>
         </button>
+        <button onClick={logoutUser}>로그아웃</button>
       </main>
     </>
   );

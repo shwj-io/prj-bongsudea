@@ -1,4 +1,4 @@
-import { form, selectContainer, signUpContainer } from './style.css.ts';
+import { title, form, selectContainer, signUpContainer } from './style.css.ts';
 import BasicInput from '@/components/input/index.tsx';
 import BasicButton from '@/components/button/index.tsx';
 import BasicSelect from '@/components/select/index.tsx';
@@ -8,7 +8,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import axios from 'axios';
 import useForm from '@/hooks/useForm';
-import { getAdministrative, signUp } from '../../modules/function/signInUp.ts';
+import { getAdministrative, signUp } from '../../modules/service/auth.ts';
 import { signUpValidation } from '@/modules/function/validation.ts';
 import { useUserStore } from '@/store/user.ts';
 
@@ -54,6 +54,8 @@ export default function SignUp() {
 
   return (
     <div className={signUpContainer}>
+      <h1 className={title}>Sign Up</h1>
+
       <form method="post" onSubmit={e => handleSubmit(e)} className={form}>
         <BasicInput
           placeholder="아이디"

@@ -2,6 +2,7 @@ import {
   emailLoginContainer,
   inputContainer,
   link,
+  title,
   form,
   linkContainer,
   lineContainer,
@@ -14,11 +15,11 @@ import BasicInput from '@/components/input';
 import BasicButton from '@/components/button';
 import Link from 'next/link';
 // css
-import { useRouter } from 'next/router';
 import useForm from '@/hooks/useForm';
+import { useRouter } from 'next/router';
 import { getReady } from '@/modules/function/common';
 import { loginValidation } from '@/modules/function/validation';
-import { loginEmail } from '@/modules/function/signInUp';
+import { loginEmail, loginGithub, loginGoogle } from '@/modules/service/auth';
 import { useUserStore } from '@/store/user';
 
 export default function Login() {
@@ -45,9 +46,34 @@ export default function Login() {
     validate: loginValidation,
   });
 
+  const getGoogleUrl = async () => {
+    try {
+      const response = await loginGoogle();
+      if (response.data.url) {
+        router.replace(response.data.url);
+        return response;
+      }
+    } catch (error: any) {
+      throw new Error(error);
+    }
+  };
+
+  const getGithubUrl = async () => {
+    try {
+      const response = await loginGithub();
+      if (response.data.url) {
+        router.replace(response.data.url);
+        return response;
+      }
+    } catch (error: any) {
+      throw new Error(error);
+    }
+  };
+
   return (
     <div className={emailLoginContainer}>
       <div className={emailLogin}>
+        <h1 className={title}>Login</h1>
         <form method="post" onSubmit={e => handleSubmit(e)} className={form}>
           <div className={inputContainer}>
             <BasicInput
@@ -67,11 +93,11 @@ export default function Login() {
           {/* <Link href="/findPassword" className={link}>
             비밀번호 찾기
           </Link> */}
-          <div onClick={getReady} className={link}>
+          <Link href="/password/find" className={link}>
             비밀번호 찾기
-          </div>
+          </Link>
           <div>|</div>
-          <Link href="/signUp" className={link}>
+          <Link href="/sign-up" className={link}>
             회원가입
           </Link>
         </div>
@@ -82,8 +108,12 @@ export default function Login() {
         <div className={line} />
       </div>
       <div className={socialLoginContainer}>
-        <BasicButton type="button">구글 로그인</BasicButton>
-        <BasicButton type="button">카카오 로그인</BasicButton>
+        <BasicButton type="button" onClick={getGoogleUrl}>
+          구글 로그인
+        </BasicButton>
+        <BasicButton type="button" onClick={getGithubUrl}>
+          깃허브 로그인
+        </BasicButton>
       </div>
     </div>
   );
