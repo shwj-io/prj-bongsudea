@@ -10,6 +10,10 @@ export default function GoogleAuth() {
   const { accessToken, saveUser, removeUser } = useUserStore(state => state);
 
   useEffect(() => {
+    // TODO 수정 필요
+    // console.log('>>>>>>>>>>>>>이동');
+    // http://localhost:3000/login/googleAuth?code=7b229dba-ea40-4ec8-8fde-469dd61db0b3
+
     const params = new URLSearchParams(window?.location.hash.substring(1));
     const googleToken = params.get('access_token');
     const googleRefreshToken = params.get('refresh_token');

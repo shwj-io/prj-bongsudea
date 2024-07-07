@@ -8,8 +8,12 @@ export const signUp = (email: string, password: string) => {
   return axiosReq.POST(`/auth/signup`, { email, password });
 };
 
+export const logout = () => {
+  return axiosReq.GET(`/auth/signup`);
+};
+
 export const loginEmail = (email: string, password: string) => {
-  return axiosReq.POST(`/auth/signup`, { type: 'email', email, password });
+  return axiosReq.POST(`/auth/logout`, { type: 'email', email, password });
 };
 
 export const loginGoogle = () => {

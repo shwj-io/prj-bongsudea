@@ -2,34 +2,27 @@ import styles from '@/styles/Home.module.css';
 import Head from 'next/head';
 import Link from 'next/link';
 // css
-import { useEffect } from 'react';
-import Cookies from 'js-cookie';
 import { useUserStore } from '@/store/user';
-import { createClient } from '@/utils/server';
+import { logout } from '@/modules/service/auth';
 
 export default function Home() {
   const { accessToken, username, saveUser, removeUser } = useUserStore();
-  const supabase = createClient();
 
-  useEffect(() => {
-    const params = new URLSearchParams(window?.location.hash.substring(1));
-    const googleToken = params.get('access_token');
-    const googleRefreshToken = params.get('refresh_token');
-
-    const getUser = async () => {
-      const user = await supabase.auth.getUser();
-      saveUser(googleToken, user.data.user?.email);
-    };
-
-    if (googleToken) {
-      getUser();
-      Cookies.set('access_token', googleToken, { expires: 0.05 });
-      Cookies.set('refresh_token', googleRefreshToken, { expires: 14 });
-      // router.push('/');
-    } else {
-      console.log('로그인 재시도하세요.');
+  const logoutUser = async () => {
+    try {
+      const response = await logout();
+      console.log(response);
+      if (response.status === 200) {
+        return alert('로그아웃 성공');
+      }
+    } catch (error: any) {
+      if (error.status === 400) {
+        return alert('로그아웃 실패');
+      } else {
+        throw new Error(error);
+      }
     }
-  }, []);
+  };
 
   return (
     <>
@@ -51,6 +44,7 @@ export default function Home() {
         <button>
           <Link href="/findPassword">비밀번호찾기</Link>
         </button>
+        <button onClick={logoutUser}>로그아웃</button>
       </main>
     </>
   );
