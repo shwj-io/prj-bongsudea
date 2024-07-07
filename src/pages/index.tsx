@@ -6,6 +6,7 @@ import { useUserStore } from '@/store/user';
 import { logout } from '@/modules/service/auth';
 
 export default function Home() {
+  const supabase = createSupabse();
   const { accessToken, username, saveUser, removeUser } = useUserStore();
 
   const logoutUser = async () => {
