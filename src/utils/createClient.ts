@@ -14,6 +14,9 @@ export default function createClient(
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     // {}
     {
+      auth: {
+        flowType: 'pkce', // Using PKCE for enhanced security
+      },
       cookies: {
         get(name: string) {
           return req.cookies[name];

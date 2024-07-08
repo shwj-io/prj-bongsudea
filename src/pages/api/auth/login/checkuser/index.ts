@@ -19,9 +19,17 @@ export default async function handler(
 
     res.setHeader('Set-Cookie', [accessTokenCookie, refreshTokenCookie]);
 
+    const { data: session, error: sessionError } =
+      await supabase.auth.setSession({
+        access_token: accessToken,
+        refresh_token: refreshToken,
+      });
+
     if (error) throw error;
 
-    if (data) {
+    if (sessionError) throw sessionError;
+
+    if (session) {
       res.redirect('http://localhost:3000/password/reset');
     }
   } catch (error) {
