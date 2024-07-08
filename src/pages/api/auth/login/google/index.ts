@@ -17,10 +17,7 @@ export default async function handler(
           access_type: 'offline',
           prompt: 'consent',
         },
-        // redirectTo: 'http://localhost:3000/login/auth',
-        redirectTo: 'http://localhost:3000/api/auth/login/checkuser',
-        // redirectTo: 'http://localhost:3000/test',
-        // redirectTo: 'http://localhost:3000/api/hello',
+        redirectTo: 'http://localhost:3000',
       },
     });
 
