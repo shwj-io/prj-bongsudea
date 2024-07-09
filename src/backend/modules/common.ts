@@ -1,3 +1,6 @@
+import createClient from '@/utils/createClient';
+import { SupabaseClient } from '@supabase/supabase-js';
+
 const groupByCity = data => {
   let subCityId = 1; // Start the sub-city id from 1
 
@@ -16,4 +19,17 @@ const groupByCity = data => {
   }, []);
 };
 
-export { groupByCity };
+const authCodeForSession = async (supabase: SupabaseClient, code: string) => {
+  const { data, error } = await supabase.auth.exchangeCodeForSession(code);
+
+  const accessToken = data?.session.access_token;
+  const refreshToken = data?.session.refresh_token;
+
+  return {
+    accessToken,
+    refreshToken,
+    error,
+  };
+};
+
+export { groupByCity, authCodeForSession };
