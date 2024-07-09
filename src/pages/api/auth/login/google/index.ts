@@ -17,7 +17,7 @@ export default async function handler(
           access_type: 'offline',
           prompt: 'consent',
         },
-        redirectTo: 'http://localhost:3000',
+        redirectTo: 'http://localhost:3000/api/auth/login/checkuser',
       },
     });
 

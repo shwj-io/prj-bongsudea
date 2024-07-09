@@ -7,7 +7,7 @@ export default async function handler(
   res: NextApiResponse
 ) {
   const { code } = req.query;
-  console.log('req @@@@@@@@@@@@@@', code);
+  // console.log('req', urlParams);
   const supabase = createClient(req, res);
   try {
     const { accessToken, refreshToken, error } = await authCodeForSession(
@@ -20,15 +20,21 @@ export default async function handler(
 
     res.setHeader('Set-Cookie', [accessTokenCookie, refreshTokenCookie]);
 
-    if (accessToken || refreshToken) {
-      res.redirect('http://localhost:3000');
-    }
+    const { data: session, error: sessionError } =
+      await supabase.auth.setSession({
+        access_token: accessToken,
+        refresh_token: refreshToken,
+      });
 
-    if (error) throw error;
+    if (sessionError) throw sessionError;
+
+    if (session) {
+      res.redirect('http://localhost:3000/password/reset');
+    }
   } catch (error) {
     res.status(400).json({
       error,
-      message: '코드가 잘못되었습니다. 재시도해주세요',
+      message: '코드가 잘못되었습니다. 재시도해주세요 ~~~~~~~~~~~~~~~~~',
       status: 400,
     });
   }

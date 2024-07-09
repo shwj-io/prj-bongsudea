@@ -8,13 +8,10 @@ export default async function handler(
 ) {
   const { email } = req.body;
   const supabase = createClient(req, res);
-  // const supabase = createSupabse();
   try {
     // 패스워드를 리셋한다.
     const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
-      // redirectTo: 'http://localhost:3000/password-change',
-      // redirectTo: 'http://localhost:3000/password/reset',
-      redirectTo: 'http://localhost:3000/api/auth/login/checkuser',
+      redirectTo: 'http://localhost:3000/api/auth/reset/login',
     });
 
     if (error) throw error;
