@@ -21,6 +21,7 @@ import { getReady } from '@/modules/function/common';
 import { loginValidation } from '@/modules/function/validation';
 import { loginEmail, loginGithub, loginGoogle } from '@/modules/service/auth';
 import { useUserStore } from '@/store/user';
+import Cookies from 'js-cookie';
 
 export default function Login() {
   const initValue = { email: '', password: '' };
@@ -32,7 +33,10 @@ export default function Login() {
       const response = await loginEmail(value.email, value.password);
       if (response) {
         router.push('/');
-        saveUser(response.access_token, response.user.user_metadata.username);
+        saveUser(
+          Cookies.get('access_token'),
+          response.user.user_metadata.username
+        );
         return response;
       }
     } catch (error: any) {

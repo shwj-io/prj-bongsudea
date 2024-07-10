@@ -11,6 +11,7 @@ import useForm from '@/hooks/useForm';
 import { getAdministrative, signUp } from '../../modules/service/auth.ts';
 import { signUpValidation } from '@/modules/function/validation.ts';
 import { useUserStore } from '@/store/user.ts';
+import Cookies from 'js-cookie';
 
 // export default function SignUp({ city }) { // TODO 추후 주소, 알림동의 추가
 export default function SignUp() {
@@ -29,7 +30,7 @@ export default function SignUp() {
       const response = await signUp(value.email, value.password);
       if (response) {
         router.push('/');
-        saveUser(response.access_token, response.username);
+        saveUser(Cookies.get('access_token'), response.username);
         return response;
       }
     } catch (error: any) {

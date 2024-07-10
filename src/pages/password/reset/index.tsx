@@ -7,6 +7,7 @@ import { resetPasswordValidation } from '@/modules/function/validation';
 import { useRouter } from 'next/router';
 import { updatePassword } from '@/modules/service/auth';
 import { useUserStore } from '@/store/user';
+import Cookies from 'js-cookie';
 
 export default function ResetPassword() {
   const router = useRouter();
@@ -18,8 +19,12 @@ export default function ResetPassword() {
       console.log('>>>>>>>response', response);
       if (response.status === 200) {
         alert('비밀번호 변경에 성공하여 로그인 되었습니다.');
+
         router.push('/');
-        saveUser(response.access_token, response.user.user_metadata.username);
+        saveUser(
+          Cookies.get('access_token'),
+          response.data.user.user_metadata.username
+        );
       }
     } catch (error: any) {
       throw new Error(error);
@@ -30,6 +35,7 @@ export default function ResetPassword() {
     password: '',
     checkPassword: '',
   };
+
   const { value, handleSubmit, handleChange } = useForm({
     initValue,
     onSubmit: handleFormSubmit,

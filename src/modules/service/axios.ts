@@ -1,8 +1,10 @@
+import { useUserStore } from '@/store/user';
 import axios, {
   AxiosRequestHeaders,
   AxiosResponse,
   InternalAxiosRequestConfig,
 } from 'axios';
+import Cookies from 'js-cookie';
 
 export const axiosInstance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_REACT_APP_SERVER_URI,
@@ -15,8 +17,7 @@ export const axiosInstance = axios.create({
 axiosInstance.interceptors.request.use(
   (request: InternalAxiosRequestConfig) => {
     request.headers = request.headers || ({} as AxiosRequestHeaders);
-    const local = localStorage.getItem('user-storage');
-    const { accessToken } = JSON.parse(local).state;
+    const accessToken = Cookies.get('access_token');
 
     if (accessToken !== null) {
       request.headers['Authorization'] = `${accessToken}`;
@@ -30,29 +31,18 @@ axiosInstance.interceptors.request.use(
   }
 );
 
-// TODO 제대로 동작하는지 확인 필요
-// axiosInstance.interceptors.response.use(
-//   async (response: AxiosResponse) => {
-//     return response;
-//   },
-//   async error => {
-//     if (error.response?.status === 401) {
-//       const accessToken = await receivesToken();
-
-//       error.config.headers = {
-//         'Content-Type': 'application/json',
-//         Authorization: `Bearer ${accessToken}`,
-//       };
-//       console.log('리스폰스>>>>>>>>>>>', accessToken);
-
-//       const response = await axios.request(error.config);
-//       return response;
-//     }
-//     console.log(' axios 리스폰스>>>>>>>>>>>');
-
-//     return Promise.reject(error);
-//   }
-// );
+axiosInstance.interceptors.response.use(
+  function (response: AxiosResponse) {
+    return response;
+  },
+  async error => {
+    if (error.response?.status === 401) {
+      useUserStore.getState().removeUser();
+      window.location.href = '/login';
+    }
+    return Promise.reject(error);
+  }
+);
 
 export const axiosReq = {
   async GET(path: string) {
