@@ -12,7 +12,7 @@ export default async function handler(
   try {
     const { accessToken, refreshToken, error } = await authCodeForSession(
       supabase,
-      code
+      code as string
     );
 
     const accessTokenCookie = `access_token=${accessToken}; Path=/;`;
@@ -34,7 +34,7 @@ export default async function handler(
   } catch (error) {
     res.status(400).json({
       error,
-      message: '코드가 잘못되었습니다. 재시도해주세요 ~~~~~~~~~~~~~~~~~',
+      message: '코드가 잘못되었습니다. 재시도해주세요',
       status: 400,
     });
   }
