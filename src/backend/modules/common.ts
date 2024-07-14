@@ -13,7 +13,7 @@ const groupByCity = data => {
     }
 
     // Add sub_city with an id property
-    group.area.push({ id: subCityId++, city: currentValue.sub_city });
+    group.area.push({ id: currentValue.id, city: currentValue.sub_city });
 
     return acc;
   }, []);

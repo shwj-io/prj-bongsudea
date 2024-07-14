@@ -18,7 +18,7 @@ export default async function handler(
 ) {
   // const supabase = createSupabse();
   const supabase = createClient(req, res);
-  const { email, password } = req.body;
+  const { email, password, resion } = req.body;
   try {
     const { data, error } = await supabase.auth.signUp({
       email,
@@ -26,6 +26,7 @@ export default async function handler(
       options: {
         data: {
           username: email,
+          resion_id: Number(resion) || 0,
           avatar_url: null,
         },
       },
@@ -55,6 +56,7 @@ export default async function handler(
       .json({ data: userInfo, message: '가입에 성공했습니다.', status: 200 });
   } catch (error) {
     // 에러 처리
+    console.log('erro', error);
     res
       .status(400)
       .json({ message: '오류가 발생했습니다', error: error, status: 400 });

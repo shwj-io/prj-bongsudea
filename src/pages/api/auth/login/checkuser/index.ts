@@ -7,7 +7,6 @@ export default async function handler(
   res: NextApiResponse
 ) {
   const { code } = req.query;
-  console.log('req @@@@@@@@@@@@@@', code);
   const supabase = createClient(req, res);
   try {
     const { accessToken, refreshToken, error } = await authCodeForSession(
