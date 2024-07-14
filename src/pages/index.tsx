@@ -1,9 +1,16 @@
-import styles from '@/styles/Home.module.css';
+import {} from '@/styles/home.css.ts';
 import Head from 'next/head';
 import Link from 'next/link';
+import BasicMap from '@/components/map';
 // css
 import { useUserStore } from '@/store/user';
 import { logout } from '@/modules/service/auth';
+
+declare global {
+  interface Window {
+    kakao: any;
+  }
+}
 
 export default function Home() {
   const { accessToken, username, saveUser, removeUser } = useUserStore();
@@ -45,6 +52,7 @@ export default function Home() {
           <Link href="/password/find">비밀번호찾기</Link>
         </button>
         <button onClick={logoutUser}>로그아웃</button>
+        <BasicMap></BasicMap>
       </main>
     </>
   );
