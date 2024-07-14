@@ -1,67 +1,95 @@
 import { mapContainer } from './style.css.ts';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 type BasicMapProps = {};
 
 export default function BasicMap({}: BasicMapProps) {
-  const mapRef = useRef();
+  const [currentLocation, setCurrentLocation] = useState();
+  const mapRef = useRef(null);
 
   useEffect(() => {
-    const options = {
-      center: new window.kakao.maps.LatLng(33.450701, 126.570667),
-      level: 3,
-    };
+    getCurrentLocation()
+      .then(({ lat, lon }) => {
+        const locPosition = new window.kakao.maps.LatLng(lat, lon);
+        const options = {
+          center: locPosition,
+          level: 3,
+        };
 
-    const map = new window.kakao.maps.Map(mapRef.current, options);
-    displayCurrentLocation(map);
-  }, []);
+        const map = new window.kakao.maps.Map(mapRef.current, options);
+        setCurrentLocation(map);
+        setMarker(map, locPosition, 50, '현재 위치', '/icon/mapMarker.svg');
 
-  const displayCurrentLocation = (map: any) => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        function (position) {
-          const lat = position.coords.latitude;
-          const lon = position.coords.longitude;
-          const locPosition = new window.kakao.maps.LatLng(lat, lon);
+        map.setCenter(locPosition);
+        displayEvent(positions, map);
+      })
+      .catch(() => {
+        const locPosition = new window.kakao.maps.LatLng(37.5665, 126.978);
+        const options = {
+          center: locPosition,
+          level: 3,
+        };
 
-          setMarker(map, locPosition);
-          map.setCenter(locPosition);
-        },
-        function (error) {
-          console.error('Error occurred. Error code: ' + error.code);
-          const locPosition = new window.kakao.maps.LatLng(37.5665, 126.978);
-          map.setCenter(locPosition);
-        }
-      );
-    } else {
-      const locPosition = new window.kakao.maps.LatLng(37.5665, 126.978);
-      map.setCenter(locPosition);
+        const map = new window.kakao.maps.Map(mapRef.current, options);
+        map.setCenter(locPosition);
+      });
+  }, [mapRef.current]);
+
+  const displayEvent = (array: any, map: any) => {
+    for (var i = 0; i < array.length; i++) {
+      const position = new window.kakao.maps.LatLng(array[i].x, array[i].y);
+      setMarker(map, position, 20, array[i].title, '/icon/circle.svg');
     }
   };
 
-  function setMarker(map: any, position: any) {
-    const imageSrc = '/icon/circle.svg';
-    const imageSize = new kakao.maps.Size(64, 69);
-    const imageOption = { offset: new kakao.maps.Point(27, 69) };
+  const getCurrentLocation = (): Promise<{ lat: number; lon: number }> => {
+    return new Promise((resolve, reject) => {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          function (position) {
+            resolve({
+              lat: position.coords.latitude,
+              lon: position.coords.longitude,
+            });
+          },
+          function (error) {
+            console.error('Error occurred. Error code: ' + error.code);
+            reject();
+          }
+        );
+      } else {
+        reject();
+      }
+    });
+  };
 
-    const markerImage = new kakao.maps.MarkerImage(
-      imageSrc,
-      imageSize,
-      imageOption
+  const setMarker = (
+    map: any,
+    position: any,
+    size: number,
+    title: string,
+    image: string
+  ) => {
+    const markSize = new window.kakao.maps.Size(size, size);
+    // const imageOption = { offset: new window.kakao.maps.Point(0, 0) };
+
+    const markerImage = new window.kakao.maps.MarkerImage(
+      image,
+      markSize
+      // imageOption
     );
 
-    const marker = new kakao.maps.Marker({
+    const marker = new window.kakao.maps.Marker({
       map: map,
       position: position,
+      title: title,
       image: markerImage,
     });
 
     marker.setMap(map);
-  }
+  };
 
   // TODO
-  // 현재 위치 가져오는 동안 로딩
-  // 마커 이미지 변경
   // 사건 위치 가져와서 맵에 뿌려주기
   // 현재위치의 100m까지 뱅글뱅글 도는거 추가
   // 위치 검색
@@ -70,7 +98,30 @@ export default function BasicMap({}: BasicMapProps) {
 
   return (
     <div className={mapContainer} ref={mapRef}>
-      <button onClick={displayCurrentLocation}>현재위치</button>
+      {/* <button onClick={}>현재위치</button> */}
     </div>
   );
 }
+
+const positions = [
+  {
+    title: '카카오',
+    x: 33.450705,
+    y: 126.570677,
+  },
+  {
+    title: '생태연못',
+    x: 33.450936,
+    y: 126.569477,
+  },
+  {
+    title: '텃밭',
+    x: 33.450879,
+    y: 126.56994,
+  },
+  {
+    title: '근린공원',
+    x: 33.451393,
+    y: 126.570738,
+  },
+];
