@@ -1,10 +1,31 @@
-import {} from '@/styles/home.css.ts';
+import {
+  home,
+  eventListContainer,
+  nation,
+  eventNumber,
+  cardContainer,
+  farFromMe,
+  eventLocation,
+  card,
+  dataContainer,
+  locationContainer,
+  mainData,
+  eventTextData,
+  title,
+  explain,
+  eventImage,
+  bottom,
+  updateDate,
+  howManySaw,
+  shareButton,
+} from '@/styles/home.css.ts';
 import Head from 'next/head';
 import Link from 'next/link';
 import BasicMap from '@/components/map';
 // css
 import { useUserStore } from '@/store/user';
 import { logout } from '@/modules/service/auth';
+import { EVENT_MOCK_DATA } from '../../public/data/event';
 
 declare global {
   interface Window {
@@ -39,8 +60,8 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main>
-        <div>{username}</div>
+      <main className={home}>
+        {/* <div>{username}</div>
         <div>{username ? '회원' : '비회원'}</div>
         <button>
           <Link href="/login">로그인</Link>
@@ -51,8 +72,39 @@ export default function Home() {
         <button>
           <Link href="/password/find">비밀번호찾기</Link>
         </button>
-        <button onClick={logoutUser}>로그아웃</button>
+        <button onClick={logoutUser}>로그아웃</button> */}
         <BasicMap></BasicMap>
+        <div className={eventListContainer}>
+          <div className={nation}>Korea</div>
+          <div className={eventNumber}>사건, 사고 : 1개</div>
+          <div className={cardContainer}>
+            {EVENT_MOCK_DATA.map(event => {
+              return (
+                <div key={event.id} className={card}>
+                  <div className={locationContainer}>
+                    <div className={farFromMe}>내 위치랑 얼마나 먼지</div>
+                    <div>|</div>
+                    <div className={eventLocation}>사건 위치</div>
+                  </div>
+                  <div className={mainData}>
+                    <div className={eventTextData}>
+                      <div className={title}>{event.title}</div>
+                      <div className={explain}>{event.explain}</div>
+                    </div>
+                    <img src={event.image} className={eventImage}></img>
+                  </div>
+                  <div className={bottom}>
+                    <div className={updateDate}>업데이트된 날짜</div>
+                    <div className={locationContainer}>
+                      <div className={howManySaw}>몇명봤는지</div>
+                      <button className={shareButton}>공유</button>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
       </main>
     </>
   );

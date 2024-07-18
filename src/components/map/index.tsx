@@ -1,4 +1,4 @@
-import { mapContainer } from './style.css.ts';
+import { mapContainer, currentLocationButton } from './style.css.ts';
 import { useEffect, useRef, useState } from 'react';
 
 type BasicMapProps = {};
@@ -89,16 +89,22 @@ export default function BasicMap({}: BasicMapProps) {
     marker.setMap(map);
   };
 
+  const resetMyCurrentLocation = () => {};
+
   // TODO
   // 사건 위치 가져와서 맵에 뿌려주기
-  // 현재위치의 100m까지 뱅글뱅글 도는거 추가
   // 위치 검색
   // 현재위치 이동 버튼
   // 집, 회사 등 위치 저장
 
   return (
     <div className={mapContainer} ref={mapRef}>
-      {/* <button onClick={}>현재위치</button> */}
+      <button onClick={null} className={currentLocationButton}>
+        <img
+          src="/icon/pointer.svg"
+          alt="go to current location button icon"
+        ></img>
+      </button>
     </div>
   );
 }
