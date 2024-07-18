@@ -89,17 +89,44 @@ export default function BasicMap({}: BasicMapProps) {
     marker.setMap(map);
   };
 
-  const resetMyCurrentLocation = () => {};
+  const resetMyCurrentLocation = () => {
+    getCurrentLocation()
+      .then(({ lat, lon }) => {
+        const locPosition = new window.kakao.maps.LatLng(lat, lon);
+
+        setMarker(
+          currentLocation,
+          locPosition,
+          50,
+          '현재 위치',
+          '/icon/mapMarker.svg'
+        );
+        currentLocation.setCenter(locPosition);
+        displayEvent(positions, currentLocation);
+      })
+      .catch(() => {
+        const locPosition = new window.kakao.maps.LatLng(37.5665, 126.978);
+        const options = {
+          center: locPosition,
+          level: 3,
+        };
+
+        const map = new window.kakao.maps.Map(mapRef.current, options);
+        map.setCenter(locPosition);
+      });
+  };
 
   // TODO
   // 사건 위치 가져와서 맵에 뿌려주기
   // 위치 검색
-  // 현재위치 이동 버튼
   // 집, 회사 등 위치 저장
 
   return (
     <div className={mapContainer} ref={mapRef}>
-      <button onClick={null} className={currentLocationButton}>
+      <button
+        onClick={resetMyCurrentLocation}
+        className={currentLocationButton}
+      >
         <img
           src="/icon/pointer.svg"
           alt="go to current location button icon"
