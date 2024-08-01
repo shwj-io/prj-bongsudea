@@ -1,0 +1,28 @@
+{
+  "disasterSmsList": [
+    {
+      "DSSTR_SE_NM": "호우",
+      "CREAT_DT": "2024/07/17 21:58:48",
+      "RCV_AREA_NM": "인천광역시 강화군 강화읍,인천광역시 강화군 선원면,인천광역시 강화군 불은면,인천광역시 강화군 내가면,인천광역시 강화군 하점면,인천광역시 강화군 송해면,경기도 김포시 월곶면",
+      "MD101_SN": 215288,
+      "DSSTR_SE_ID": "3",
+      "MODF_DT": "2024-07-17 22:10:10.0",
+      "RCV_AREA_ID": "8102,8103,8104,8108,8109,8111,9384",
+      "UPDUSR_ID": "NDMSESB",
+      "MSG_SE_CD": "cbs",
+      "DELETE_AT": "N",
+      "MSG_CN": "21:56, 강화군 불은면 인근 50mm/h 이상 강한 비로 침수 등 우려(국민행동요령: cbs.kma.go.kr) Heavy rain [기상청]",
+      "RNUM": 1,
+      "EMRGNCY_STEP_ID": "4371",
+      "REGIST_DT": "2024-07-17 21:58:50.0",
+      "REGISTER_ID": "NDMSESB",
+      "EMRGNCY_STEP_NM": "긴급재난"
+    }
+  ],
+  "rtnResult": {
+    "totCnt": 1202,
+    "resultCode": "0",
+    "pageSize": 3,
+    "resultMsg": "안전뉴스가 조회되었습니다."
+  }
+}
