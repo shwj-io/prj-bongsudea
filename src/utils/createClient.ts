@@ -15,6 +15,8 @@ export default function createClient(
     {
       auth: {
         flowType: 'pkce', // Using PKCE for enhanced security
+        autoRefreshToken: true, // 자동 토큰 갱신 활성화
+        persistSession: true, // 세션을 로컬 스토리지에 저장
       },
       cookies: {
         get(name: string) {

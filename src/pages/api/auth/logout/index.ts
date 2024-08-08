@@ -11,7 +11,7 @@ export default async function handler(
   try {
     const { error } = await supabase.auth.signOut();
 
-    // if (error) throw error;
+    if (error) throw error;
 
     const accessTokenCookie = `access_token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT`;
     const refreshTokenCookie = `refresh_token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT`;
