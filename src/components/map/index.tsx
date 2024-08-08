@@ -12,7 +12,9 @@ import { useEffect, useRef, useState } from 'react';
 import { searchValidation } from '@/modules/function/validation.ts';
 import { loginEmail } from '@/modules/service/auth.ts';
 
-type BasicMapProps = {};
+type BasicMapProps = {
+  locationData: any;
+};
 
 const positions = [
   {
@@ -37,7 +39,7 @@ const positions = [
   },
 ];
 
-export default function BasicMap({}: BasicMapProps) {
+export default function BasicMap({ locationData }: BasicMapProps) {
   const [currentLocation, setCurrentLocation] = useState();
   const mapRef = useRef(null);
 
@@ -109,7 +111,10 @@ export default function BasicMap({}: BasicMapProps) {
 
   const displayEvent = (array: any, map: any) => {
     for (let i = 0; i < array.length; i++) {
-      const position = new window.kakao.maps.LatLng(array[i].x, array[i].y);
+      const position = new window.kakao.maps.LatLng(
+        array[i].location_y, // TODO x, y  바껴있음
+        array[i].location_x
+      );
       setMarker(map, position, 20, array[i].title, '/icon/circle.svg');
     }
   };
@@ -128,7 +133,7 @@ export default function BasicMap({}: BasicMapProps) {
         setMarker(map, locPosition, 50, '현재 위치', '/icon/mapMarker.svg');
 
         map.setCenter(locPosition);
-        displayEvent(positions, map);
+        displayEvent(locationData, map);
       })
       .catch(() => {
         const locPosition = new window.kakao.maps.LatLng(37.5665, 126.978);
@@ -155,7 +160,7 @@ export default function BasicMap({}: BasicMapProps) {
           '/icon/mapMarker.svg'
         );
         currentLocation?.setCenter(locPosition);
-        displayEvent(positions, currentLocation);
+        displayEvent(locationData, currentLocation);
       })
       .catch(() => {
         const locPosition = new window.kakao.maps.LatLng(37.5665, 126.978);
@@ -170,7 +175,6 @@ export default function BasicMap({}: BasicMapProps) {
   };
 
   // TODO
-  // 사건 위치 가져와서 맵에 뿌려주기
   // 위치 검색
   // 집, 회사 등 위치 저장
 

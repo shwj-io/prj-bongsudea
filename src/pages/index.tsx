@@ -27,7 +27,6 @@ import { useUserStore } from '@/store/user';
 import { logout } from '@/modules/service/auth';
 import { EVENT_MOCK_DATA } from '../../public/data/event';
 import { getIssues } from '@/modules/service/issues';
-import { useEffect } from 'react';
 
 declare global {
   interface Window {
@@ -35,8 +34,9 @@ declare global {
   }
 }
 
-export default function Home({}) {
+export default function Home({ issues }) {
   const { accessToken, username, saveUser, removeUser } = useUserStore();
+  const { data, current_total, total } = issues;
 
   const logoutUser = async () => {
     try {
@@ -53,17 +53,6 @@ export default function Home({}) {
     }
   };
 
-  // TODO 데이터 가져오는 중
-  const aaa = async () => {
-    const data = await getIssues(1, 10);
-    console.log(data);
-  };
-
-  useEffect(() => {
-    aaa();
-  }, []);
-
-  // console.log(issues);
   return (
     <>
       <Head>
@@ -85,12 +74,12 @@ export default function Home({}) {
           <Link href="/password/find">비밀번호찾기</Link>
         </button>
         <button onClick={logoutUser}>로그아웃</button> */}
-        <BasicMap />
+        <BasicMap locationData={data} />
         <div className={eventListContainer}>
           <div className={nation}>Korea</div>
-          <div className={eventNumber}>사건, 사고 : 1개</div>
+          <div className={eventNumber}>사건, 사고 : {total}개</div>
           <div className={cardContainer}>
-            {EVENT_MOCK_DATA.map(event => {
+            {data.map(event => {
               return (
                 <div key={event.id} className={card}>
                   <div className={locationContainer}>
@@ -100,13 +89,13 @@ export default function Home({}) {
                   </div>
                   <div className={mainData}>
                     <div className={eventTextData}>
-                      <div className={title}>{event.title}</div>
-                      <div className={explain}>{event.explain}</div>
+                      <div className={title}>{event.issue_title}</div>
+                      <div className={explain}>{event.issue_contents}</div>
                     </div>
                     <img src={event.image} className={eventImage} alt="" />
                   </div>
                   <div className={bottom}>
-                    <div className={updateDate}>업데이트된 날짜</div>
+                    <div className={updateDate}>{event.updated_at}</div>
                     <div className={locationContainer}>
                       <div className={howManySaw}>몇명봤는지</div>
                       <button className={shareButton} type="button">
@@ -124,18 +113,19 @@ export default function Home({}) {
   );
 }
 
-// export const getServerSideProps = async () => {
-//   try {
-//     const data = await getIssues(1, 10);
-//     console.log(data);
-//     if (data.status === 200) {
-//       return {
-//         props: { issues: data },
-//       };
-//     }
-//   } catch (err) {
-//     return {
-//       notFound: false,
-//     };
-//   }
-// };
+export const getServerSideProps = async () => {
+  try {
+    // TODO 데이터 받으면 현재위치랑, 사건 위치랑 비교해서 값 새로 넣어서 데이터 반환해야함
+    const data = await getIssues(1, 10);
+
+    if (data.status === 200) {
+      return {
+        props: { issues: data },
+      };
+    }
+  } catch (err) {
+    return {
+      notFound: false,
+    };
+  }
+};
