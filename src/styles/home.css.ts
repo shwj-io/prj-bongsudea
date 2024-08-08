@@ -4,6 +4,12 @@ export const home = style({
   display: 'flex',
   justifyContent: 'center',
   height: '100%',
+
+  '@media': {
+    'screen and (max-width: 900px)': {
+      flexDirection: 'column',
+    },
+  },
 });
 
 export const eventListContainer = style({
@@ -15,6 +21,11 @@ export const eventListContainer = style({
   display: 'flex',
   flexDirection: 'column',
   gap: '10px',
+  '@media': {
+    'screen and (max-width: 900px)': {
+      width: '100%',
+    },
+  },
 });
 
 export const nation = style({

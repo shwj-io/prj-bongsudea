@@ -1,1 +1,0 @@
-import { axiosReq } from './axios';

@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import {
   home,
   eventListContainer,
@@ -7,7 +8,7 @@ import {
   farFromMe,
   eventLocation,
   card,
-  dataContainer,
+  // dataContainer,
   locationContainer,
   mainData,
   eventTextData,
@@ -20,12 +21,13 @@ import {
   shareButton,
 } from '@/styles/home.css.ts';
 import Head from 'next/head';
-import Link from 'next/link';
 import BasicMap from '@/components/map';
 // css
 import { useUserStore } from '@/store/user';
 import { logout } from '@/modules/service/auth';
 import { EVENT_MOCK_DATA } from '../../public/data/event';
+import { getIssues } from '@/modules/service/issues';
+import { useEffect } from 'react';
 
 declare global {
   interface Window {
@@ -33,7 +35,7 @@ declare global {
   }
 }
 
-export default function Home() {
+export default function Home({}) {
   const { accessToken, username, saveUser, removeUser } = useUserStore();
 
   const logoutUser = async () => {
@@ -46,12 +48,22 @@ export default function Home() {
     } catch (error: any) {
       if (error.status === 400) {
         return alert('로그아웃 실패');
-      } else {
-        throw new Error(error);
       }
+      throw new Error(error);
     }
   };
 
+  // TODO 데이터 가져오는 중
+  const aaa = async () => {
+    const data = await getIssues(1, 10);
+    console.log(data);
+  };
+
+  useEffect(() => {
+    aaa();
+  }, []);
+
+  // console.log(issues);
   return (
     <>
       <Head>
@@ -73,7 +85,7 @@ export default function Home() {
           <Link href="/password/find">비밀번호찾기</Link>
         </button>
         <button onClick={logoutUser}>로그아웃</button> */}
-        <BasicMap></BasicMap>
+        <BasicMap />
         <div className={eventListContainer}>
           <div className={nation}>Korea</div>
           <div className={eventNumber}>사건, 사고 : 1개</div>
@@ -91,13 +103,15 @@ export default function Home() {
                       <div className={title}>{event.title}</div>
                       <div className={explain}>{event.explain}</div>
                     </div>
-                    <img src={event.image} className={eventImage}></img>
+                    <img src={event.image} className={eventImage} alt="" />
                   </div>
                   <div className={bottom}>
                     <div className={updateDate}>업데이트된 날짜</div>
                     <div className={locationContainer}>
                       <div className={howManySaw}>몇명봤는지</div>
-                      <button className={shareButton}>공유</button>
+                      <button className={shareButton} type="button">
+                        공유
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -109,3 +123,19 @@ export default function Home() {
     </>
   );
 }
+
+// export const getServerSideProps = async () => {
+//   try {
+//     const data = await getIssues(1, 10);
+//     console.log(data);
+//     if (data.status === 200) {
+//       return {
+//         props: { issues: data },
+//       };
+//     }
+//   } catch (err) {
+//     return {
+//       notFound: false,
+//     };
+//   }
+// };
