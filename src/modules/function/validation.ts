@@ -2,6 +2,7 @@ type ValidationProps = {
   email?: string;
   password?: string;
   checkPassword?: string;
+  search?: string;
 };
 
 export const signUpValidation = ({
@@ -80,5 +81,14 @@ export const resetPasswordValidation = ({
     errors.checkPassword = '입력된 비밀번호가 다릅니다.';
   }
 
+  return errors;
+};
+
+export const searchValidation = ({ search }: ValidationProps) => {
+  const errors: ValidationProps = {};
+
+  if (!search) {
+    errors.search = '검색어를 입력해주세요.';
+  }
   return errors;
 };
