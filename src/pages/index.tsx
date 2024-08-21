@@ -5,38 +5,30 @@ import {
   nation,
   eventNumber,
   cardContainer,
-  farFromMe,
-  eventLocation,
-  card,
-  // dataContainer,
-  locationContainer,
-  mainData,
-  eventTextData,
-  title,
-  explain,
-  eventImage,
-  bottom,
-  updateDate,
-  howManySaw,
-  shareButton,
 } from '@/styles/home.css.ts';
 import Head from 'next/head';
 import BasicMap from '@/components/map';
 // css
 import { useUserStore } from '@/store/user';
 import { logout } from '@/modules/service/auth';
-import { EVENT_MOCK_DATA } from '../../public/data/event';
+// import { EVENT_MOCK_DATA } from '../../public/data/event';
 import { getIssues } from '@/modules/service/issues';
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
+import IssueCard from '@/components/card/issueCard';
 
-declare global {
-  interface Window {
-    kakao: any;
-  }
-}
+// declare global {
+//   interface Window {
+//     kakao: any;
+//   }
+// }
 
-export default function Home({ issues }) {
+export default function Home({ initialIssues }) {
   const { accessToken, username, saveUser, removeUser } = useUserStore();
-  const { data, current_total, total } = issues;
+  // const { data, current_total, total } = initialIssues;
+  const [issues, setIssues] = useState(initialIssues?.data);
+  const [page, setPage] = useState(1);
+  const router = useRouter();
 
   const logoutUser = async () => {
     try {
@@ -45,6 +37,7 @@ export default function Home({ issues }) {
       if (response.status === 200) {
         return alert('로그아웃 성공');
       }
+      throw new Error();
     } catch (error: any) {
       if (error.status === 400) {
         return alert('로그아웃 실패');
@@ -52,6 +45,23 @@ export default function Home({ issues }) {
       throw new Error(error);
     }
   };
+
+  const getMoreIssues = async (currentPage: number) => {
+    try {
+      const data = await getIssues(currentPage, 10); // 페이지에 따른 데이터 가져오기
+      if (data.status === 200) {
+        setIssues((prevIssues: any) => [...prevIssues, ...data.data]); // 기존 데이터와 병합
+      }
+    } catch (error) {
+      console.error('Failed to fetch more issues:', error);
+    }
+  };
+
+  useEffect(() => {
+    if (page > 1) {
+      getMoreIssues(page); // page가 변경될 때마다 데이터 가져오기
+    }
+  }, [page]);
 
   return (
     <>
@@ -74,36 +84,21 @@ export default function Home({ issues }) {
           <Link href="/password/find">비밀번호찾기</Link>
         </button>
         <button onClick={logoutUser}>로그아웃</button> */}
-        <BasicMap locationData={data} />
+        <BasicMap locationData={initialIssues?.data} />
         <div className={eventListContainer}>
           <div className={nation}>Korea</div>
-          <div className={eventNumber}>사건, 사고 : {total}개</div>
+          <div className={eventNumber}>
+            사건, 사고 : {initialIssues?.total}개
+          </div>
           <div className={cardContainer}>
-            {data.map(event => {
+            {issues.map((event, idx) => {
               return (
-                <div key={event.id} className={card}>
-                  <div className={locationContainer}>
-                    <div className={farFromMe}>내 위치랑 얼마나 먼지</div>
-                    <div>|</div>
-                    <div className={eventLocation}>사건 위치</div>
-                  </div>
-                  <div className={mainData}>
-                    <div className={eventTextData}>
-                      <div className={title}>{event.issue_title}</div>
-                      <div className={explain}>{event.issue_contents}</div>
-                    </div>
-                    <img src={event.image} className={eventImage} alt="" />
-                  </div>
-                  <div className={bottom}>
-                    <div className={updateDate}>{event.updated_at}</div>
-                    <div className={locationContainer}>
-                      <div className={howManySaw}>몇명봤는지</div>
-                      <button className={shareButton} type="button">
-                        공유
-                      </button>
-                    </div>
-                  </div>
-                </div>
+                <IssueCard
+                  key={event.id}
+                  event={event}
+                  onFetchMore={() => setPage(prev => prev + 1)}
+                  isLastEvent={issues.length - 1 === idx}
+                />
               );
             })}
           </div>
@@ -120,9 +115,10 @@ export const getServerSideProps = async () => {
 
     if (data.status === 200) {
       return {
-        props: { issues: data },
+        props: { initialIssues: data },
       };
     }
+    throw new Error();
   } catch (err) {
     return {
       notFound: false,
