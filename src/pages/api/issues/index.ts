@@ -8,15 +8,21 @@ export default async function handler(
 ) {
   const { page, pageSize }: { [key: string]: string | string[] } = req.query;
   const supabase = createClient(req, res);
+  const NumberPage = Number(page);
+  const NumberPageSize = Number(pageSize);
   try {
-    if (page > pageSize) throw new Error('page가 pageSize보다 클수 없습니다');
+    if (NumberPage > NumberPageSize)
+      throw new Error('page가 pageSize보다 클수 없습니다');
     const { count } = await supabase
       .from('issue')
       .select('*', { count: 'exact' });
     const { data, error } = await supabase
       .from('issue')
       .select()
-      .range(page - 1, page * pageSize - 1);
+      .range(
+        NumberPageSize * (NumberPage - 1),
+        NumberPage * NumberPageSize - 1
+      );
     if (error) throw error;
     res.status(200).json({
       status: 200,

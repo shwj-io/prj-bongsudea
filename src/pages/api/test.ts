@@ -13,44 +13,6 @@ export default async function handler(
   // const { query } = req;
   const supabase = createClient(req, res);
   try {
-    // const mapToData = data0731.disasterSmsList
-    //   .map(item => {
-    //     const areaItem = item.RCV_AREA_NM.split(',')[0];
-    //     if (!item.MSG_CN.includes('경찰청')) {
-    //       return {
-    //         issue_id: item.MD101_SN,
-    //         status_id: item.MSG_CN.includes('경보') ? 30 : 20,
-    //         issue_title: '재난문자 시리즈',
-    //         issue_description: null,
-    //         issue_contents: item.MSG_CN,
-    //         issue_type: item.DSSTR_SE_NM,
-    //         create_at: item.CREAT_DT,
-    //         update_at: null,
-    //         author: '관리자',
-    //         expired_at: item.MODF_DT,
-    //         is_admin: false,
-    //         is_allow: true,
-    //         location_x: null,
-    //         location_y: null,
-    //         test: areaItem,
-    //         // areatest: area,
-    //       };
-    //     }
-    //     return null;
-    //   })
-    //   .filter(item => item !== null);
-    // res.status(200).json({ data: mapToData });
-
-    const { data } = await axios.get(
-      `https://naveropenapi.apigw.ntruss.com/map-geocode/v2/geocode?query=경기도 파주시`,
-      {
-        headers: {
-          'X-NCP-APIGW-API-KEY-ID': '6oe2c5j1oe',
-          'X-NCP-APIGW-API-KEY': 'pkt9oWawMEjVVqMT3b4HM61gRyIyN8acWJyXu3Ik',
-        },
-      }
-    );
-
     const mapToData = await Promise.all(
       data0731.disasterSmsList.map(async item => {
         const areaItem = item.RCV_AREA_NM.split(',')[0];
@@ -59,7 +21,7 @@ export default async function handler(
           const [geocodeResponse, categoryResponse, resionResponse] =
             await Promise.all([
               axios.get(
-                `https://naveropenapi.apigw.ntruss.com/map-geocode/v2/geocode?query=${areaItem}`,
+                `https://dapi.kakao.com/v2/local/search/address.json?query=${query.area}`,
                 {
                   headers: {
                     'X-NCP-APIGW-API-KEY-ID': '6oe2c5j1oe',
