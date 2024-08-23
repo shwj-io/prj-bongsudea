@@ -32,4 +32,10 @@ const authCodeForSession = async (supabase: SupabaseClient, code: string) => {
   };
 };
 
-export { groupByCity, authCodeForSession };
+const isObjectEmpty = objectName => {
+  return (
+    Object.keys(objectName).length === 0 && objectName.constructor === Object
+  );
+};
+
+export { groupByCity, authCodeForSession, isObjectEmpty };

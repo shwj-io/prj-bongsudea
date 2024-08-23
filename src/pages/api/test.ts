@@ -21,12 +21,12 @@ export default async function handler(
           const [geocodeResponse, categoryResponse, resionResponse] =
             await Promise.all([
               axios.get(
-                `https://dapi.kakao.com/v2/local/search/address.json?query=${query.area}`,
+              axios.get(
+                `https://naveropenapi.apigw.ntruss.com/map-geocode/v2/geocode?query=${convert.trim()}`,
                 {
                   headers: {
-                    'X-NCP-APIGW-API-KEY-ID': '6oe2c5j1oe',
-                    'X-NCP-APIGW-API-KEY':
-                      'pkt9oWawMEjVVqMT3b4HM61gRyIyN8acWJyXu3Ik',
+                    'X-NCP-APIGW-API-KEY-ID': process.env.NCP_API_KEY_ID,
+                    'X-NCP-APIGW-API-KEY': process.env.NCP_API_KEY,
                   },
                 }
               ),
