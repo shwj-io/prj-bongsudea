@@ -13,11 +13,14 @@ export default async function handler(
   }: { [key: string]: string | string[] | number } = req.query;
   const supabase = createClient(req, res);
   try {
-    const { data, error } = await supabase.rpc('get_issues_within_distance', {
-      lon: Number(longtitude),
-      lat: Number(latitude),
-      distance: Number(distance),
-    });
+    const { data, error } = await supabase.rpc(
+      'get_issues_within_distance_join',
+      {
+        lon: Number(longtitude),
+        lat: Number(latitude),
+        distance: Number(distance),
+      }
+    );
 
     if (error) throw error;
     res.status(200).json({
