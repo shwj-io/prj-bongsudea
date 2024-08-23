@@ -10,9 +10,9 @@ export default async function handler(
   const supabase = createClient(req, res);
   try {
     const { data, error } = await supabase
-      .from('resion')
+      .from('region')
       .select()
-      .eq('resion_code', query.code);
+      .eq('region_code', query.code);
     res.status(200).json({ data });
   } catch (err) {
     res.status(400).json({ message: '잘못된 요청입니다.', error: err });
