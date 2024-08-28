@@ -10,7 +10,6 @@ import Head from 'next/head';
 import BasicMap from '@/components/map';
 // css
 import { useUserStore } from '@/store/user';
-import { logout } from '@/modules/service/auth';
 // import { EVENT_MOCK_DATA } from '../../public/data/event';
 import { getIssues, getMyAroundIssues } from '@/modules/service/issues';
 import { useEffect, useState } from 'react';
@@ -26,22 +25,6 @@ export default function Home({}) {
     lat: 0,
     lon: 0,
   });
-
-  const logoutUser = async () => {
-    try {
-      const response = await logout();
-      console.log(response);
-      if (response.status === 200) {
-        return alert('로그아웃 성공');
-      }
-      throw new Error();
-    } catch (error: any) {
-      if (error.status === 400) {
-        return alert('로그아웃 실패');
-      }
-      throw new Error(error);
-    }
-  };
 
   const getMoreIssues = async (currentPage: number) => {
     try {
@@ -88,18 +71,6 @@ export default function Home({}) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className={home}>
-        {/* <div>{username}</div>
-        <div>{username ? '회원' : '비회원'}</div>
-        <button>
-          <Link href="/login">로그인</Link>
-        </button>
-        <button>
-          <Link href="/sign-up">회원가입</Link>
-        </button>
-        <button>
-          <Link href="/password/find">비밀번호찾기</Link>
-        </button>
-        <button onClick={logoutUser}>로그아웃</button> */}
         <BasicMap locationData={issues} setMyCoordinate={setMyCoordinate} />
         <div className={eventListContainer}>
           <div className={nation}>Korea</div>

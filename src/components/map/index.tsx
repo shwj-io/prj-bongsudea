@@ -1,16 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
-import {
-  mapContainer,
-  searchContainer,
-  searchInput,
-  iconButton,
-  currentLocationButton,
-} from './style.css.ts';
+import { mapContainer, currentLocationButton } from './style.css.ts';
 // css
-import useForm from '@/hooks/useForm.ts';
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
-import { searchValidation } from '@/modules/function/validation.ts';
-import { loginEmail } from '@/modules/service/auth.ts';
 
 type BasicMapProps = {
   locationData: any;
@@ -52,25 +43,6 @@ export default function BasicMap({
   const [currentLocation, setCurrentLocation] = useState();
 
   const mapRef = useRef(null);
-
-  const initValue = { search: '' };
-
-  const handleFormSubmit = async value => {
-    try {
-      const response = await loginEmail(value.search, '');
-      if (response) {
-        console.log(response);
-      }
-    } catch (error: any) {
-      throw new Error(error);
-    }
-  };
-
-  const { value, errors, isLoading, handleSubmit, handleChange } = useForm({
-    initValue,
-    onSubmit: handleFormSubmit,
-    validate: searchValidation,
-  });
 
   const getCurrentLocation = (): Promise<{ lat: number; lon: number }> => {
     return new Promise((resolve, reject) => {
@@ -197,21 +169,6 @@ export default function BasicMap({
 
   return (
     <div className={mapContainer} ref={mapRef}>
-      <form className={searchContainer}>
-        <input
-          className={searchInput}
-          placeholder="검색"
-          type="text"
-          value={value.search}
-          onChange={e => handleChange(e, 'password')}
-        />
-        <button className={iconButton} onClick={handleSubmit} type="submit">
-          <img src="/icon/search.svg" alt="search button icon" />
-        </button>
-        <button className={iconButton} type="button">
-          <img src="/icon/user.svg" alt="search button icon" />
-        </button>
-      </form>
       <button
         onClick={resetMyCurrentLocation}
         className={currentLocationButton}
