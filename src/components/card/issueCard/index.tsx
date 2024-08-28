@@ -42,16 +42,24 @@ export default function IssueCard({
   return (
     <div className={card} ref={ref}>
       <div className={locationContainer}>
-        <div className={farFromMe}>내 위치랑 얼마나 먼지</div>
+        <div className={farFromMe}>
+          나로부터 {Math.floor(event.distance_in_meters)}M
+        </div>
         <div>|</div>
-        <div className={eventLocation}>사건 위치</div>
+        <div className={eventLocation}>{event.sub_city}</div>
+        <div>|</div>
+        <div>{event.status_name}</div>
       </div>
       <div className={mainData}>
         <div className={eventTextData}>
           <div className={title}>{event.issue_title}</div>
           <div className={explain}>{event.issue_contents}</div>
         </div>
-        <img src={event.image} className={eventImage} alt="" />
+        <img
+          src={event.image ? event.image : '/image/eventDefaultImage.webp'}
+          className={eventImage}
+          alt="event"
+        />
       </div>
       <div className={bottom}>
         <div className={updateDate}>{event.updated_at}</div>

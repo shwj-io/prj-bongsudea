@@ -8,12 +8,18 @@ import {
 } from './style.css.ts';
 // css
 import useForm from '@/hooks/useForm.ts';
-import { useEffect, useRef, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
 import { searchValidation } from '@/modules/function/validation.ts';
 import { loginEmail } from '@/modules/service/auth.ts';
 
 type BasicMapProps = {
   locationData: any;
+  setMyCoordinate: Dispatch<
+    SetStateAction<{
+      lat: number;
+      lon: number;
+    }>
+  >;
 };
 
 const positions = [
@@ -39,8 +45,12 @@ const positions = [
   },
 ];
 
-export default function BasicMap({ locationData }: BasicMapProps) {
+export default function BasicMap({
+  locationData,
+  setMyCoordinate,
+}: BasicMapProps) {
   const [currentLocation, setCurrentLocation] = useState();
+
   const mapRef = useRef(null);
 
   const initValue = { search: '' };
@@ -67,6 +77,11 @@ export default function BasicMap({ locationData }: BasicMapProps) {
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
           function (position) {
+            setMyCoordinate({
+              lat: position.coords.latitude,
+              lon: position.coords.longitude,
+            });
+
             resolve({
               lat: position.coords.latitude,
               lon: position.coords.longitude,
@@ -110,6 +125,8 @@ export default function BasicMap({ locationData }: BasicMapProps) {
   };
 
   const displayEvent = (array: any, map: any) => {
+    if (array.length === 0) return;
+
     for (let i = 0; i < array.length; i++) {
       const position = new window.kakao.maps.LatLng(
         array[i].location_y, // TODO x, y  바껴있음

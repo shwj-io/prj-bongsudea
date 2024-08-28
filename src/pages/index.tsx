@@ -12,23 +12,20 @@ import BasicMap from '@/components/map';
 import { useUserStore } from '@/store/user';
 import { logout } from '@/modules/service/auth';
 // import { EVENT_MOCK_DATA } from '../../public/data/event';
-import { getIssues } from '@/modules/service/issues';
+import { getIssues, getMyAroundIssues } from '@/modules/service/issues';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import IssueCard from '@/components/card/issueCard';
 
-// declare global {
-//   interface Window {
-//     kakao: any;
-//   }
-// }
-
-export default function Home({ initialIssues }) {
+export default function Home({}) {
   const { accessToken, username, saveUser, removeUser } = useUserStore();
-  // const { data, current_total, total } = initialIssues;
-  const [issues, setIssues] = useState(initialIssues?.data);
+  const [issues, setIssues] = useState([]);
   const [page, setPage] = useState(1);
   const router = useRouter();
+  const [myCoordinate, setMyCoordinate] = useState({
+    lat: 0,
+    lon: 0,
+  });
 
   const logoutUser = async () => {
     try {
@@ -50,7 +47,26 @@ export default function Home({ initialIssues }) {
     try {
       const data = await getIssues(currentPage, 10); // 페이지에 따른 데이터 가져오기
       if (data.status === 200) {
-        setIssues((prevIssues: any) => [...prevIssues, ...data.data]); // 기존 데이터와 병합
+        // setIssues((prevIssues: any) => [...prevIssues, ...data.data]); // 기존 데이터와 병합
+        setIssues(data.data);
+      }
+    } catch (error) {
+      console.error('Failed to fetch more issues:', error);
+    }
+  };
+
+  const getMoreMyAroundIssues = async (
+    lat: number,
+    lon: number,
+    distance: number //TODO 추후 유저가 직접 거리 정하는 셀렉트 필요할 듯
+  ) => {
+    try {
+      const data = await getMyAroundIssues(lon, lat, distance);
+
+      if (data.status === 200) {
+        // setIssues((prevIssues: any) => [...prevIssues, ...data.data]); // 기존 데이터와 병합
+        setIssues(data.data);
+        return data;
       }
     } catch (error) {
       console.error('Failed to fetch more issues:', error);
@@ -58,10 +74,10 @@ export default function Home({ initialIssues }) {
   };
 
   useEffect(() => {
-    if (page > 1) {
-      getMoreIssues(page); // page가 변경될 때마다 데이터 가져오기
+    if (!!myCoordinate.lat && !!myCoordinate.lon) {
+      getMoreMyAroundIssues(myCoordinate.lat, myCoordinate.lon, 500);
     }
-  }, [page]);
+  }, [myCoordinate.lat, myCoordinate.lon]);
 
   return (
     <>
@@ -84,44 +100,30 @@ export default function Home({ initialIssues }) {
           <Link href="/password/find">비밀번호찾기</Link>
         </button>
         <button onClick={logoutUser}>로그아웃</button> */}
-        <BasicMap locationData={initialIssues?.data} />
+        <BasicMap locationData={issues} setMyCoordinate={setMyCoordinate} />
         <div className={eventListContainer}>
           <div className={nation}>Korea</div>
           <div className={eventNumber}>
-            사건, 사고 : {initialIssues?.total}개
+            사건, 사고 : {issues?.total ? issues?.total : issues.length}개
           </div>
-          <div className={cardContainer}>
-            {issues.map((event, idx) => {
-              return (
-                <IssueCard
-                  key={event.id}
-                  event={event}
-                  onFetchMore={() => setPage(prev => prev + 1)}
-                  isLastEvent={issues.length - 1 === idx}
-                />
-              );
-            })}
-          </div>
+          {issues.length > 0 ? (
+            <div className={cardContainer}>
+              {issues?.map((event, idx) => {
+                return (
+                  <IssueCard
+                    key={event.id}
+                    event={event}
+                    onFetchMore={() => setPage(prev => prev + 1)}
+                    isLastEvent={issues.length - 1 === idx}
+                  />
+                );
+              })}
+            </div>
+          ) : (
+            <div>근처에 사건 사고가 없네용~~</div>
+          )}
         </div>
       </main>
     </>
   );
 }
-
-export const getServerSideProps = async () => {
-  try {
-    // TODO 데이터 받으면 현재위치랑, 사건 위치랑 비교해서 값 새로 넣어서 데이터 반환해야함
-    const data = await getIssues(1, 10);
-
-    if (data.status === 200) {
-      return {
-        props: { initialIssues: data },
-      };
-    }
-    throw new Error();
-  } catch (err) {
-    return {
-      notFound: false,
-    };
-  }
-};
