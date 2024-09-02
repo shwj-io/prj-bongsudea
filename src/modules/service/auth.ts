@@ -1,11 +1,11 @@
 import { axiosReq } from './axios';
 
 export const getAdministrative = (city?: string) => {
-  return axiosReq.GET(`/administrative?city=${city}`);
+  return axiosReq.GET(`/administrative${city ? `?city=${city}` : ''}`);
 };
 
-export const signUp = (email: string, password: string) => {
-  return axiosReq.POST(`/auth/signup`, { email, password });
+export const signUp = (email: string, password: string, resion: number) => {
+  return axiosReq.POST(`/auth/signup`, { email, password, resion });
 };
 
 export const logout = () => {

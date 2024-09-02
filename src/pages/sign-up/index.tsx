@@ -4,9 +4,8 @@ import BasicButton from '@/components/button/index.tsx';
 import BasicSelect from '@/components/select/index.tsx';
 import { Checkbox, FormControlLabel } from '@mui/material';
 // css
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/router';
-import axios from 'axios';
 import useForm from '@/hooks/useForm';
 import { getAdministrative, signUp } from '../../modules/service/auth.ts';
 import { signUpValidation } from '@/modules/function/validation.ts';
@@ -26,13 +25,18 @@ export default function SignUp({ city }) {
 
   const handleFormSubmit = async value => {
     try {
-      const response = await signUp(value.email, value.password);
+      const wordId = wordList[0]?.area.filter(
+        word => word.city === value.word
+      )[0].id;
+
+      const response = await signUp(value.email, value.password, wordId);
       if (response) {
         router.push('/');
         saveUser(Cookies.get('access_token'), response.username);
         return response;
       }
     } catch (error: any) {
+      alert(error.response.data.message);
       throw new Error(error);
     }
   };
@@ -43,16 +47,14 @@ export default function SignUp({ city }) {
     validate: signUpValidation,
   });
 
-  const [isChecked, setIsChecked] = useState(false);
-  const wordList = city.filter(city => {
+  const [isChecked, setIsChecked] = useState(false); // TODO 알람관련 값 db에 저장 시 보내주기
+  const wordList = city?.filter(city => {
     return city.city === value.city;
   });
 
   const handleCheckBox = () => {
     setIsChecked(prev => !prev);
   };
-
-  console.log(city);
 
   return (
     <div className={signUpContainer}>
@@ -118,7 +120,7 @@ export const getServerSideProps = async () => {
     const administrativeData = await getAdministrative();
 
     return {
-      props: { city: administrativeData },
+      props: { city: administrativeData.data },
     };
   } catch (err) {
     return {
