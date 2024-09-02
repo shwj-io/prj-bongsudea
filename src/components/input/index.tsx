@@ -3,12 +3,14 @@ import { TextField } from '@mui/material';
 type BasicInputProps = {
   placeholder: string;
   value: string;
+  type: string;
   handleChange: (e) => void;
 };
 
 export default function BasicInput({
   placeholder,
   value,
+  type,
   handleChange,
 }: BasicInputProps) {
   return (
@@ -19,6 +21,7 @@ export default function BasicInput({
       InputLabelProps={{
         style: { color: '#000' },
       }}
+      type={type}
       value={value}
       onChange={handleChange}
       sx={{

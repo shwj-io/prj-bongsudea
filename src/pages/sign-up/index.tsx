@@ -13,8 +13,7 @@ import { signUpValidation } from '@/modules/function/validation.ts';
 import { useUserStore } from '@/store/user.ts';
 import Cookies from 'js-cookie';
 
-// export default function SignUp({ city }) { // TODO 추후 주소, 알림동의 추가
-export default function SignUp() {
+export default function SignUp({ city }) {
   const router = useRouter();
   const { accessToken, username, saveUser, removeUser } = useUserStore();
   const initValue = {
@@ -44,14 +43,16 @@ export default function SignUp() {
     validate: signUpValidation,
   });
 
-  // const [isChecked, setIsChecked] = useState(false);
-  // const wordList = city.filter(city => {
-  //   return city.city === value.city;
-  // });
+  const [isChecked, setIsChecked] = useState(false);
+  const wordList = city.filter(city => {
+    return city.city === value.city;
+  });
 
-  // const handleCheckBox = () => {
-  //   setIsChecked(prev => !prev);
-  // };
+  const handleCheckBox = () => {
+    setIsChecked(prev => !prev);
+  };
+
+  console.log(city);
 
   return (
     <div className={signUpContainer}>
@@ -61,34 +62,37 @@ export default function SignUp() {
         <BasicInput
           placeholder="아이디"
           value={value.email}
+          type="text"
           handleChange={e => handleChange(e, 'email')}
         />
         <BasicInput
           placeholder="비밀번호"
           value={value.password}
+          type="password"
           handleChange={e => handleChange(e, 'password')}
         />
         <BasicInput
           placeholder="비밀번호 확인"
           value={value.checkPassword}
+          type="password"
           handleChange={e => handleChange(e, 'checkPassword')}
         />
-        {/* <div className={selectContainer}>
+        <div className={selectContainer}>
           <BasicSelect
             placeholder="시/도"
             itemList={city}
             value={value.city}
             handleChange={e => handleChange(e, 'city')}
-          ></BasicSelect>
+          />
           <BasicSelect
             placeholder="군/구"
             itemList={wordList[0]?.area}
             value={value.word}
             handleChange={e => handleChange(e, 'word')}
-          ></BasicSelect>
-        </div> */}
+          />
+        </div>
 
-        {/* <FormControlLabel
+        <FormControlLabel
           control={
             <Checkbox
               onChange={handleCheckBox}
@@ -101,7 +105,7 @@ export default function SignUp() {
             />
           }
           label="알림 서비스에 동의합니다."
-        /> */}
+        />
 
         <BasicButton type="submit">회원가입</BasicButton>
       </form>
@@ -109,16 +113,16 @@ export default function SignUp() {
   );
 }
 
-// export const getServerSideProps = async () => {
-//   try {
-//     const administrativeData = await getAdministrative();
+export const getServerSideProps = async () => {
+  try {
+    const administrativeData = await getAdministrative();
 
-//     return {
-//       props: { city: administrativeData },
-//     };
-//   } catch (err) {
-//     return {
-//       notFound: false,
-//     };
-//   }
-// };
+    return {
+      props: { city: administrativeData },
+    };
+  } catch (err) {
+    return {
+      notFound: false,
+    };
+  }
+};

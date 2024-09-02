@@ -50,11 +50,13 @@ export default function ResetPassword() {
         <BasicInput
           placeholder="새로운 비밀번호"
           value={value?.password}
+          type="password"
           handleChange={e => handleChange(e, 'password')}
         />
         <BasicInput
           placeholder="새로운 비밀번호 확인"
           value={value?.checkPassword}
+          type="password"
           handleChange={e => handleChange(e, 'checkPassword')}
         />
         <BasicButton type="submit">비밀번호 변경</BasicButton>

@@ -13,6 +13,8 @@ import { getReady } from '@/modules/function/common.ts';
 import Modal from '../modal/index.tsx';
 import { useUserStore } from '@/store/user.ts';
 import { useState } from 'react';
+import { useRouter } from 'next/router';
+import Cookies from 'js-cookie';
 // css
 
 const NAV_NON_MEMBER_MODAL_DATA = [
@@ -30,12 +32,13 @@ export default function Nav({}: NavProps) {
   const initValue = { search: '' };
   const { accessToken, username, saveUser, removeUser } = useUserStore();
   const [isUserModalOpen, setIsUserModalOpen] = useState(false);
+  const router = useRouter();
 
   const logoutUser = async () => {
     try {
       const response = await logout();
-      console.log(response);
       if (response.status === 200) {
+        removeUser();
         return alert('로그아웃 성공');
       }
       throw new Error();
@@ -56,11 +59,16 @@ export default function Nav({}: NavProps) {
     // { id: 4, type: 'link', text: 'posting', link: "/post" },
   ];
 
-  const handleFormSubmit = async value => {
+  const handleFormSubmit = async (value: any) => {
     try {
       const response = await loginEmail(value.search, '');
-      if (response) {
-        console.log(response);
+      if (response.status === 200) {
+        router.push('/');
+        saveUser(
+          Cookies.get('access_token'),
+          response.user.user_metadata.username
+        );
+        alert('로그인 성공하였습니다.');
       }
     } catch (error: any) {
       throw new Error(error);
@@ -108,7 +116,3 @@ export default function Nav({}: NavProps) {
     </nav>
   );
 }
-
-//TODO 다음에 할거
-// 로그아웃 고치기
-// 로그인 유저에따라 다른 ui

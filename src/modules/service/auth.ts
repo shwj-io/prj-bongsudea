@@ -1,7 +1,7 @@
 import { axiosReq } from './axios';
 
-export const getAdministrative = (email: string, password: string) => {
-  return axiosReq.GET(`/administrative`);
+export const getAdministrative = (city?: string) => {
+  return axiosReq.GET(`/administrative?city=${city}`);
 };
 
 export const signUp = (email: string, password: string) => {

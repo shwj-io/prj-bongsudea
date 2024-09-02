@@ -35,6 +35,7 @@ export default function FindPassword() {
         <BasicInput
           placeholder="이메일"
           value={value?.email}
+          type="text"
           handleChange={e => handleChange(e, 'email')}
         />
         <BasicButton type="submit">이메일 인증</BasicButton>

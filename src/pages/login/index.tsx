@@ -31,13 +31,13 @@ export default function Login() {
   const handleFormSubmit = async value => {
     try {
       const response = await loginEmail(value.email, value.password);
-      if (response) {
+      if (response.status === 200) {
         router.push('/');
         saveUser(
           Cookies.get('access_token'),
           response.user.user_metadata.username
         );
-        return response;
+        alert('로그인 성공하였습니다.');
       }
     } catch (error: any) {
       throw new Error(error);
@@ -83,20 +83,19 @@ export default function Login() {
             <BasicInput
               placeholder="이메일"
               value={value.email}
+              type="text"
               handleChange={e => handleChange(e, 'email')}
             />
             <BasicInput
               placeholder="비밀번호"
               value={value.password}
+              type="password"
               handleChange={e => handleChange(e, 'password')}
             />
           </div>
           <BasicButton type="submit">로그인</BasicButton>
         </form>
         <div className={linkContainer}>
-          {/* <Link href="/findPassword" className={link}>
-            비밀번호 찾기
-          </Link> */}
           <Link href="/password/find" className={link}>
             비밀번호 찾기
           </Link>
