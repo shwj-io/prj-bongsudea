@@ -7,7 +7,7 @@ export default async function handler(
   res: NextApiResponse
 ) {
   const {
-    longtitude,
+    longitude,
     latitude,
     distance = 100,
   }: { [key: string]: string | string[] | number } = req.query;
@@ -16,7 +16,7 @@ export default async function handler(
     const { data, error } = await supabase.rpc(
       'get_issues_within_distance_join',
       {
-        lon: Number(longtitude),
+        lon: Number(longitude),
         lat: Number(latitude),
         distance: Number(distance),
       }
