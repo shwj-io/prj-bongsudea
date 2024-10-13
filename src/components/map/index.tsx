@@ -1,5 +1,11 @@
 /* eslint-disable @next/next/no-img-element */
-import { mapContainer, currentLocationButton } from './style.css.ts';
+import {
+  mapContainer,
+  currentLocationButton,
+  radarContainer,
+  radarStyle,
+  radarDot,
+} from './style.css.ts';
 // css
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
 
@@ -70,30 +76,72 @@ export default function BasicMap({
     });
   };
 
+  // TODO 레이더 크기 동적 반영
+  // const calculateDistanceInPx = (map: any, position: any) => {
+  //   const center = new window.kakao.maps.LatLng(position.lat, position.lon);
+
+  //   // 지도상에서 500m 거리의 끝 좌표를 계산하여 픽셀 단위로 변환
+  //   const distanceInPx =
+  //     map.getProjection().pointFromCoords(center).x -
+  //     map
+  //       .getProjection()
+  //       .pointFromCoords(
+  //         new window.kakao.maps.LatLng(position.lat + 0.0045, position.lon)
+  //       ).x;
+
+  //   return Math.abs(distanceInPx); // 절대값을 사용해 정확한 거리 계산
+  // };
+
+  // 현재위치는 레이더로 보여주고 사건 위치는 점으로 표시
+  // 레이더는 div로 사건위치는 이미지로 해봄
   const setMarker = (
     map: any,
     position: any,
     size: number,
     title: string,
-    image: string
+    image: string,
+    isCurrent: boolean = false
   ) => {
-    const markSize = new window.kakao.maps.Size(size, size);
-    // const imageOption = { offset: new window.kakao.maps.Point(0, 0) };
+    if (isCurrent) {
+      const content = document.createElement('div');
+      content.className = radarContainer;
 
-    const markerImage = new window.kakao.maps.MarkerImage(
-      image,
-      markSize
-      // imageOption
-    );
+      const radar = document.createElement('div');
+      radar.className = radarStyle;
 
-    const marker = new window.kakao.maps.Marker({
-      map,
-      position,
-      title,
-      image: markerImage,
-    });
+      const dot = document.createElement('div');
+      dot.className = radarDot;
 
-    marker.setMap(map);
+      // TODO 레이더 크기 동적 반영
+      // const distanceInPx = calculateDistanceInPx(map, position);
+      // content.style.width = `${distanceInPx}px`;
+      // content.style.height = `${distanceInPx}px`;
+
+      content.appendChild(radar);
+      content.appendChild(dot);
+
+      const customOverlay = new window.kakao.maps.CustomOverlay({
+        map,
+        position,
+        content,
+        // yAnchor: 1,
+      });
+
+      customOverlay.setMap(map);
+    } else {
+      const markSize = new window.kakao.maps.Size(size, size);
+
+      const markerImage = new window.kakao.maps.MarkerImage(image, markSize);
+
+      const marker = new window.kakao.maps.Marker({
+        map,
+        position,
+        title,
+        image: markerImage,
+      });
+
+      marker.setMap(map);
+    }
   };
 
   const displayEvent = (array: any, map: any) => {
@@ -119,7 +167,14 @@ export default function BasicMap({
 
         const map = new window.kakao.maps.Map(mapRef.current, options);
         setCurrentLocation(map);
-        setMarker(map, locPosition, 50, '현재 위치', '/icon/mapMarker.svg');
+        setMarker(
+          map,
+          locPosition,
+          50,
+          '현재 위치',
+          '/icon/mapMarker.svg',
+          true
+        );
 
         map.setCenter(locPosition);
         displayEvent(locationData, map);
@@ -146,7 +201,8 @@ export default function BasicMap({
           locPosition,
           50,
           '현재 위치',
-          '/icon/mapMarker.svg'
+          '/icon/mapMarker.svg',
+          true
         );
         currentLocation?.setCenter(locPosition);
         displayEvent(locationData, currentLocation);
