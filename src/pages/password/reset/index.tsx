@@ -25,6 +25,13 @@ export default function ResetPassword() {
           Cookies.get('access_token'),
           response.data.user.user_metadata.username
         );
+        rows.push(
+          '+' +
+            A.slice(Math.floor((A.length - 1) / K) * K, A.length)
+              .map(() => '-'.repeat(maxLength + 2))
+              .join('+') +
+            '+'
+        );
       }
     } catch (error: any) {
       throw new Error(error);

@@ -1,0 +1,28 @@
+{
+  "disasterSmsList": [
+    {
+      "DSSTR_SE_NM": "폭염",
+      "CREAT_DT": "2025/06/29 15:26:24",
+      "RCV_AREA_NM": "전라남도 전체 ",
+      "MD101_SN": 237431,
+      "DSSTR_SE_ID": "31",
+      "MODF_DT": "2025-06-29 16:11:19.0",
+      "RCV_AREA_ID": "179",
+      "UPDUSR_ID": "NDMSESB",
+      "MSG_SE_CD": "cbs",
+      "DELETE_AT": "N",
+      "MSG_CN": "도내 전지역 폭염특보 발효중. 논, 밭, 작업장 등에서 야외 작업 자제, 충분히 물을 마시고 그늘에서 휴식을 취하는 등 건강관리에 유의하세요. [전라남도]",
+      "RNUM": 6,
+      "EMRGNCY_STEP_ID": "4372",
+      "REGIST_DT": "2025-06-29 15:26:30.0",
+      "REGISTER_ID": "NDMSESB",
+      "EMRGNCY_STEP_NM": "안전안내"
+    }
+  ],
+  "rtnResult": {
+    "totCnt": 296,
+    "resultCode": "0",
+    "pageSize": 1,
+    "resultMsg": "안전뉴스가 조회되었습니다."
+  }
+}

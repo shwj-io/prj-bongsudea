@@ -1,4 +1,5 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
+import { ErrorMessageCase } from '@/backend/modules/ErrorCase';
 import createClient from '@/utils/createClient';
 import { createSupabse } from '@/utils/server';
 import type { NextApiRequest, NextApiResponse } from 'next';
@@ -65,9 +66,11 @@ export default async function handler(
       .json({ data: userInfo, message: '가입에 성공했습니다.', status: 200 });
   } catch (error) {
     // 에러 처리
-    console.log('error', error);
-    res
-      .status(400)
-      .json({ message: '오류가 발생했습니다', error: error, status: 400 });
+    const message = ErrorMessageCase(error.code);
+    res.status(400).json({
+      message,
+      error,
+      status: 400,
+    });
   }
 }

@@ -22,6 +22,7 @@ import { loginValidation } from '@/modules/function/validation';
 import { loginEmail, loginGithub, loginGoogle } from '@/modules/service/auth';
 import { useUserStore } from '@/store/user';
 import Cookies from 'js-cookie';
+import { authService } from '@/modules/supabase';
 
 export default function Login() {
   const initValue = { email: '', password: '' };
@@ -50,13 +51,26 @@ export default function Login() {
     validate: loginValidation,
   });
 
+  // const getGoogleUrl = async () => {
+  //   try {
+  //     const response = await loginGoogle();
+  //     if (response.data.url) {
+  //       router.replace(response.data.url);
+  //       return response;
+  //     }
+  //   } catch (error: any) {
+  //     throw new Error(error);
+  //   }
+  // };
+
   const getGoogleUrl = async () => {
     try {
-      const response = await loginGoogle();
-      if (response.data.url) {
-        router.replace(response.data.url);
-        return response;
-      }
+      const response = await authService.signInWithGoogle();
+      console.log('>>>>>>>response', response);
+      // if (response.data.url) {
+      //   router.replace(response.data.url);
+      //   return response;
+      // }
     } catch (error: any) {
       throw new Error(error);
     }

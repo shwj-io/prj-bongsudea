@@ -25,18 +25,41 @@ import BasicMap from '@/components/map';
 // css
 import { useUserStore } from '@/store/user';
 import { logout } from '@/modules/service/auth';
-import { EVENT_MOCK_DATA } from '../../public/data/event';
-import { getIssues } from '@/modules/service/issues';
+import { issuesService } from '@/modules/supabase';
 
 declare global {
   interface Window {
-    kakao: any;
+    kakao: {
+      maps: {
+        Map: any;
+        LatLng: any;
+        Marker: any;
+        InfoWindow: any;
+      };
+    };
   }
 }
 
-export default function Home({ issues }) {
-  const { accessToken, username, saveUser, removeUser } = useUserStore();
-  const { data, current_total, total } = issues;
+interface Issue {
+  id: string;
+  issue_title: string;
+  issue_contents: string;
+  image: string;
+  updated_at: string;
+}
+
+interface IssuesData {
+  data: Issue[];
+  total: number;
+}
+
+interface HomeProps {
+  issues: IssuesData;
+}
+
+export default function Home({ issues }: HomeProps) {
+  const { removeUser } = useUserStore();
+  const { data, total } = issues;
 
   const logoutUser = async () => {
     try {
@@ -79,7 +102,7 @@ export default function Home({ issues }) {
           <div className={nation}>Korea</div>
           <div className={eventNumber}>사건, 사고 : {total}개</div>
           <div className={cardContainer}>
-            {data.map(event => {
+            {data.map((event: Issue) => {
               return (
                 <div key={event.id} className={card}>
                   <div className={locationContainer}>
@@ -116,16 +139,28 @@ export default function Home({ issues }) {
 export const getServerSideProps = async () => {
   try {
     // TODO 데이터 받으면 현재위치랑, 사건 위치랑 비교해서 값 새로 넣어서 데이터 반환해야함
-    const data = await getIssues(1, 10);
+    const data = await issuesService.getIssues(1, 10);
 
-    if (data.status === 200) {
-      return {
-        props: { issues: data },
-      };
-    }
-  } catch (err) {
+    console.log('data', data);
+
+    // Supabase 서비스는 직접 데이터를 반환하므로 status 체크 불필요
     return {
-      notFound: false,
+      props: {
+        issues: {
+          data: data || [],
+          total: data?.length || 0,
+        },
+      },
+    };
+  } catch (err) {
+    console.error('Issues 조회 오류:', err);
+    return {
+      props: {
+        issues: {
+          data: [],
+          total: 0,
+        },
+      },
     };
   }
 };

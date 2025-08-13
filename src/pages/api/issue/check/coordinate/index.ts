@@ -11,11 +11,12 @@ export default async function handler(
   // const supabase = createClient(req, res);
   try {
     const data = await axios.get(
-      `https://naveropenapi.apigw.ntruss.com/map-geocode/v2/geocode?query=${query.area}`,
+      `https://maps.apigw.ntruss.com/map-geocode/v2/geocode?query=${query.area}`,
       {
         headers: {
-          'X-NCP-APIGW-API-KEY-ID': process.env.NCP_API_KEY_ID,
-          'X-NCP-APIGW-API-KEY': process.env.NCP_API_KEY,
+          'x-ncp-apigw-api-key-id': process.env.NCP_API_KEY_ID,
+          'x-ncp-apigw-api-key': process.env.NCP_API_KEY,
+          'Content-Type': 'application/json',
         },
       }
     );
